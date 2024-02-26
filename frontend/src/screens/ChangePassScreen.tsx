@@ -41,7 +41,7 @@ const ChangePassScreen = () => {
             return;
         }
         try {
-            const { data } = await axios.patch('/user/forgotPassword', {
+            const { data } = await axios.patch('/users/forgotPassword', {
                 email: email,
                 password: item.password,
             });

@@ -20,6 +20,21 @@ const LoginScreen = () => {
         }));
     };
     const handleSubmit = async () => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (emailRegex.test(user.email)) {
+            Toast.show({
+                type: 'error',
+                text1: 'Not Email',
+            });
+            return;
+        }
+        if (user.email === '' || user.password === '') {
+            Toast.show({
+                type: 'error',
+                text1: 'Please complete all information',
+            });
+            return;
+        }
         try {
             const { data } = await axios.post('/auth/login', {
                 email: user.email,
@@ -33,6 +48,11 @@ const LoginScreen = () => {
                     text1: 'Login Success',
                 });
                 navigation.replace('Home', { id: data.data._id });
+            } else {
+                Toast.show({
+                    type: 'error',
+                    text1: 'Wrong Info',
+                });
             }
         } catch (error) {
             console.log(error);

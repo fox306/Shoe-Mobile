@@ -6,6 +6,7 @@ import { SignUp } from '../types/type';
 import axios from '../utils/axios';
 import Toast from 'react-native-toast-message';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import isValidDate from '../lib/validation/date';
 
 const RegisterScreen = () => {
     const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
@@ -21,6 +22,28 @@ const RegisterScreen = () => {
         setUser((prev) => ({ ...prev, [field]: value }));
     };
     const handleSubmit = async () => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(user.email)) {
+            Toast.show({
+                type: 'error',
+                text1: 'Not Email',
+            });
+            return;
+        }
+        if (!isValidDate(user.birthDay)) {
+            Toast.show({
+                type: 'error',
+                text1: 'Please enter the correct date',
+            });
+            return;
+        }
+        if (user.email === '' || user.password === '' || user.birthDay === '' || user.fullName === '') {
+            Toast.show({
+                type: 'error',
+                text1: 'Please complete all information',
+            });
+            return;
+        }
         try {
             const { data } = await axios.post('/auth/sendCode', {
                 email: user.email,
