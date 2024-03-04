@@ -1,4 +1,14 @@
-import { View, Text, Image, TouchableOpacity, TextInput, ScrollView, Keyboard } from 'react-native';
+import {
+    View,
+    Text,
+    Image,
+    TouchableOpacity,
+    TextInput,
+    ScrollView,
+    Keyboard,
+    useWindowDimensions,
+    Dimensions,
+} from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import React, { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -49,6 +59,9 @@ const HomeScreen = () => {
         Keyboard.dismiss();
     };
 
+    const screenHeight = Dimensions.get('window').height;
+
+    console.log(screenHeight);
     useEffect(() => {
         try {
             const fetchCate = async () => {
@@ -97,7 +110,7 @@ const HomeScreen = () => {
         setActive(index);
     };
     return (
-        <SafeAreaView className="h-screen relative">
+        <SafeAreaView className={`h-[${screenHeight + 46}px] relative`}>
             <ScrollView showsVerticalScrollIndicator={false} className="bg-background">
                 <View className="pt-[50px]">
                     <View className="flex flex-row justify-between items-center px-[50px]">

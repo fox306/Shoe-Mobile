@@ -1,7 +1,7 @@
 import { View, Text, Pressable, TouchableOpacity } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { HeartIcon, HomeIcon, QueueListIcon, UserIcon } from 'react-native-heroicons/outline';
-import { ParamListBase, useNavigation } from '@react-navigation/native';
+import { NavigationContainer, ParamListBase, useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -40,7 +40,7 @@ const Navbar = ({ name }: Props) => {
     };
 
     return (
-        <View className="bg-white w-full absolute bottom-[-40px] h-20 flex flex-row items-center justify-between px-[50px] rounded-t-[30px] drop-shadow-navbar">
+        <View className="bg-red-500 absolute bottom-0 right-0 left-0 h-20 flex flex-row items-center justify-between px-[50px] rounded-t-[30px] z-50">
             <TouchableOpacity onPress={() => navigation.navigate('Home')}>
                 <HomeIcon color={`${name === 'Home' ? '#33A0FF' : '#ADADAF'}`} />
             </TouchableOpacity>
