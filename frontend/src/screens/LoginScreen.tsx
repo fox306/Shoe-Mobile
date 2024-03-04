@@ -21,7 +21,7 @@ const LoginScreen = () => {
     };
     const handleSubmit = async () => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (emailRegex.test(user.email)) {
+        if (!emailRegex.test(user.email)) {
             Toast.show({
                 type: 'error',
                 text1: 'Not Email',
@@ -40,6 +40,7 @@ const LoginScreen = () => {
                 email: user.email,
                 password: user.password,
             });
+            console.log(data);
             if (data.success) {
                 AsyncStorage.setItem('token', data.accessToken);
                 AsyncStorage.setItem('user', JSON.stringify(data.data));
@@ -55,7 +56,10 @@ const LoginScreen = () => {
                 });
             }
         } catch (error) {
-            console.log(error);
+            Toast.show({
+                type: 'error',
+                text1: 'Wrong Info',
+            });
         }
     };
     return (
