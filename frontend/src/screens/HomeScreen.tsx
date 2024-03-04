@@ -59,9 +59,8 @@ const HomeScreen = () => {
         Keyboard.dismiss();
     };
 
-    const screenHeight = Dimensions.get('window').height;
-
-    console.log(screenHeight);
+    const { height } = useWindowDimensions();
+    const modifiedHeight = height + 36;
     useEffect(() => {
         try {
             const fetchCate = async () => {
@@ -110,7 +109,7 @@ const HomeScreen = () => {
         setActive(index);
     };
     return (
-        <SafeAreaView className={`h-[${screenHeight + 46}px] relative`}>
+        <SafeAreaView className="relative" style={{ height: modifiedHeight }}>
             <ScrollView showsVerticalScrollIndicator={false} className="bg-background">
                 <View className="pt-[50px]">
                     <View className="flex flex-row justify-between items-center px-[50px]">

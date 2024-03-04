@@ -1,4 +1,4 @@
-import { View, Text, Touchable, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, Touchable, TouchableOpacity, ScrollView, useWindowDimensions } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ChevronLeftIcon, ChevronRightIcon } from 'react-native-heroicons/outline';
@@ -20,6 +20,9 @@ const ProfileScreen = () => {
 
     const { profile } = route.params as RouteParams;
 
+    const { height } = useWindowDimensions();
+    const modifiedHeight = height + 36;
+
     const handleLogout = async () => {
         try {
             const { data } = await axios.delete(`/auth/logout/${profile._id}`);
@@ -36,7 +39,7 @@ const ProfileScreen = () => {
         }
     };
     return (
-        <SafeAreaView className="h-screen bg-background">
+        <SafeAreaView className="bg-background" style={{ height: modifiedHeight }}>
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View className="flex flex-col items-center justify-center p-10">
                     <View className="flex flex-row items-center mb-10">

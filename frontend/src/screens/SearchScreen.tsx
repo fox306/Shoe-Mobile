@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, Keyboard } from 'react-native';
+import { View, Text, ScrollView, Keyboard, useWindowDimensions } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { TextInput } from 'react-native';
@@ -42,6 +42,9 @@ const SearchScreen = () => {
         Keyboard.dismiss();
     };
 
+    const { height } = useWindowDimensions();
+    const modifiedHeight = height + 36;
+
     useEffect(() => {
         try {
             const fetchItem = async () => {
@@ -60,7 +63,7 @@ const SearchScreen = () => {
     console.log(items);
     console.log('Tong', total);
     return (
-        <SafeAreaView className="h-screen relative">
+        <SafeAreaView className="relative" style={{ height: modifiedHeight }}>
             <ScrollView showsVerticalScrollIndicator={false} className="bg-background">
                 <View className="px-10">
                     <View className="flex flex-row w-full items-center mt-10 ">

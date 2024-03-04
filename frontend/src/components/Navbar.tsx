@@ -21,7 +21,6 @@ const Navbar = ({ name }: Props) => {
         };
         const getProfile = async () => {
             const user = await AsyncStorage.getItem('user');
-            console.log(user);
             if (user) {
                 const userObject = JSON.parse(user);
                 setProfile(userObject);
