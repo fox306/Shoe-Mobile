@@ -54,10 +54,13 @@ const ProfileScreen = () => {
                         <ProfileInfo profile={profile} />
                     </View>
                     <View className="flex flex-col gap-[14px]">
-                        <View className="w-full flex flex-row items-center justify-between py-4 px-[30px] bg-white rounded-[20px]">
+                        <TouchableOpacity
+                            onPress={() => navigation.navigate('Order', { user: profile?._id })}
+                            className="w-full flex flex-row items-center justify-between py-4 px-[30px] bg-white rounded-[20px]"
+                        >
                             <Text className="font-medium text-lg">Orders</Text>
                             <ChevronRightIcon color="black" width={24} height={24} />
-                        </View>
+                        </TouchableOpacity>
                         <View className="w-full flex flex-row items-center justify-between py-4 px-[30px] bg-white rounded-[20px]">
                             <Text className="font-medium text-lg">Favorites</Text>
 
@@ -68,11 +71,14 @@ const ProfileScreen = () => {
 
                             <ChevronRightIcon color="black" width={24} height={24} />
                         </View>
-                        <View className="w-full flex flex-row items-center justify-between py-4 px-[30px] bg-white rounded-[20px]">
+                        <TouchableOpacity
+                            onPress={() => navigation.navigate('ListAddress', { user: profile?._id })}
+                            className="w-full flex flex-row items-center justify-between py-4 px-[30px] bg-white rounded-[20px]"
+                        >
                             <Text className="font-medium text-lg">Delivery Addresses</Text>
 
                             <ChevronRightIcon color="black" width={24} height={24} />
-                        </View>
+                        </TouchableOpacity>
                     </View>
                     <View className="px-[105px] py-[15px] rounded-[30px] bg-main mt-10 mb-20">
                         <TouchableOpacity onPress={handleLogout}>

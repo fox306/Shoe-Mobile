@@ -123,7 +123,7 @@ export type Cart = {
 export type Order = {
     _id: string;
     items: ItemCart[];
-    userID: string;
+    user: string;
     deliveryAddress: Address;
     paymentMethod: string;
     total: number;

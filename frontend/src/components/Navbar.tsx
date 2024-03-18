@@ -50,7 +50,7 @@ const Navbar = ({ name }: Props) => {
             <TouchableOpacity onPress={check}>
                 <UserIcon color={`${name === 'Profile' ? '#33A0FF' : '#ADADAF'}`} />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate('Order', { user: profile?._id })}>
+            <TouchableOpacity>
                 <QueueListIcon color={`${name === 'Orders' ? '#33A0FF' : '#ADADAF'}`} />
             </TouchableOpacity>
         </View>

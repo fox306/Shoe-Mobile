@@ -7,14 +7,16 @@ import { ArrowLeftIcon } from 'react-native-heroicons/outline';
 import Navbar from '../components/Navbar';
 import axios from '../utils/axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useRoute } from '@react-navigation/native';
+import { ParamListBase, useNavigation, useRoute } from '@react-navigation/native';
 import { Order as O } from '../types/type';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 type Params = {
     user: string;
 };
 
 const OrdersScreen = () => {
+    const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
     const statuses = ['All', 'Confirming', 'Accepted', 'Delivering', 'Successful', 'Cancel', 'Return'];
     const route = useRoute();
 
@@ -24,23 +26,35 @@ const OrdersScreen = () => {
     const [orders, setOrders] = useState<O[]>([]);
 
     useEffect(() => {
-        const fetchData = async () => {
-            const { data } = await axios.get(
-                `/orders/user/status?status=${active}&pageSize=5&pageNumber=1&user=${user}`,
-            );
-            if (data.success) {
-                setOrders(data.data);
-            }
-        };
-        fetchData();
+        if (active === 'All') {
+            const fetchData = async () => {
+                const { data } = await axios.get(`/orders/user/?user=${user}&pageSize=10`);
+                if (data.success) {
+                    setOrders(data.data);
+                }
+            };
+            fetchData();
+        } else {
+            const fetchData = async () => {
+                const { data } = await axios.get(
+                    `/orders/user/status?status=${active}&pageSize=5&pageNumber=1&user=${user}`,
+                );
+                if (data.success) {
+                    console.log(data.data);
+                    setOrders(data.data);
+                }
+            };
+            fetchData();
+        }
     }, [active]);
+    console.log(orders);
     return (
         <SafeAreaView>
             <View className="relative px-5 h-screen">
                 <View className="relative mt-10 mb-7 flex flex-row items-center justify-center">
-                    <View className="absolute left-0">
+                    <TouchableOpacity onPress={() => navigation.goBack()} className="absolute left-0">
                         <ArrowLeftIcon size={24} color={'#000000'} />
-                    </View>
+                    </TouchableOpacity>
                     <Text className="font-medium text-lg">Orders</Text>
                 </View>
                 <View>
@@ -72,7 +86,7 @@ const OrdersScreen = () => {
                     <FlatList
                         showsVerticalScrollIndicator={false}
                         data={orders}
-                        renderItem={(item) => <Order item={item} />}
+                        renderItem={({ item }) => <Order item={item} />}
                     />
                 </View>
                 <Navbar name="Orders" />
