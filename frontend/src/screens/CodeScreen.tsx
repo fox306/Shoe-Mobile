@@ -53,7 +53,7 @@ const CodeScreen = () => {
                 console.log(err);
             }
         } else {
-            navigation.navigate('ChangePass', { email: email });
+            navigation.navigate('Recovery', { email: email });
         }
     };
     return (

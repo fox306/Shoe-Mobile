@@ -14,8 +14,6 @@ type Props = {
 const Image = ({ index, x, item }: Props) => {
     const { width: SCREEN_WIDTH } = useWindowDimensions();
 
-    console.log(item);
-
     const lottieAnimationStyle = useAnimatedStyle(() => {
         const translateYAnimation = interpolate(
             x.value,

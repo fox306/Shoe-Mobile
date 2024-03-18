@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, Keyboard, useWindowDimensions } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { TextInput } from 'react-native';
 import { TouchableOpacity } from 'react-native';

@@ -10,7 +10,7 @@ type Params = {
     email: string;
 };
 
-const ChangePassScreen = () => {
+const RecoveryPasswordScreen = () => {
     const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
     const route = useRoute();
@@ -105,4 +105,4 @@ const ChangePassScreen = () => {
     );
 };
 
-export default ChangePassScreen;
+export default RecoveryPasswordScreen;
