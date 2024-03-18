@@ -1,13 +1,12 @@
 import {
     View,
     Text,
-    Image,
     TouchableOpacity,
     TextInput,
     ScrollView,
     Keyboard,
     useWindowDimensions,
-    Dimensions,
+    FlatList,
 } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import React, { useState, useEffect } from 'react';
@@ -61,6 +60,19 @@ const HomeScreen = () => {
 
     const { height } = useWindowDimensions();
     const modifiedHeight = height + 36;
+
+    useEffect(() => {
+        const getProfile = async () => {
+            const user = await AsyncStorage.getItem('user');
+            if (user) {
+                const userObject = JSON.parse(user);
+                setUser(userObject._id);
+            }
+        };
+
+        getProfile();
+    }, []);
+
     useEffect(() => {
         try {
             const fetchCate = async () => {
@@ -104,9 +116,14 @@ const HomeScreen = () => {
             console.log(error);
         }
     }, []);
+
     const handleChange = (id: string, index: number) => {
         setCateId(id);
         setActive(index);
+    };
+
+    const handleMoveCart = () => {
+        navigation.navigate('Cart', { user: user });
     };
     return (
         <SafeAreaView className="relative" style={{ height: modifiedHeight }}>
@@ -118,12 +135,14 @@ const HomeScreen = () => {
                             <Text className="text-main text-3xl">For Everyone</Text>
                         </View>
                         <View>
-                            <View className="relative">
-                                <ShoppingCartIcon size={30} className="text-main" color="#33A0FF" />
-                            </View>
-                            <View className="w-4 h-4 rounded-full bg-main absolute right-[-5px] top-[-3px]">
-                                <Text className="text-[10px] text-white text-center">3</Text>
-                            </View>
+                            <TouchableOpacity onPress={handleMoveCart}>
+                                <View className="relative">
+                                    <ShoppingCartIcon size={30} className="text-main" color="#33A0FF" />
+                                </View>
+                                <View className="w-4 h-4 rounded-full bg-main absolute right-[-5px] top-[-3px]">
+                                    <Text className="text-[10px] text-white text-center">3</Text>
+                                </View>
+                            </TouchableOpacity>
                         </View>
                     </View>
                     <View className="px-10">
@@ -146,9 +165,8 @@ const HomeScreen = () => {
                         <View className="flex flex-row justify-between pl-10">
                             {category &&
                                 category.map((item, i) => (
-                                    <TouchableOpacity onPress={() => handleChange(item._id as string, i)}>
+                                    <TouchableOpacity key={i} onPress={() => handleChange(item._id as string, i)}>
                                         <View
-                                            key={i}
                                             className={`w-20 h-[33px] mr-[10px] ${
                                                 active === i ? 'border-b-[3px] border-main' : ''
                                             } `}
@@ -163,14 +181,15 @@ const HomeScreen = () => {
                         <View className="pr-5 mb-[5px]">
                             <Text className="text-xs text-main text-right">See more &gt;</Text>
                         </View>
-                        <View className="flex flex-row">
-                            <ScrollView
-                                horizontal
+                        <View>
+                            <FlatList
+                                horizontal={true}
                                 showsHorizontalScrollIndicator={false}
                                 contentContainerStyle={{ paddingTop: 20 }}
-                            >
-                                {items && items.map((item) => <Product name="Home" key={item._id} item={item} />)}
-                            </ScrollView>
+                                data={items}
+                                keyExtractor={(item, idx) => item._id + idx}
+                                renderItem={({ item }) => <Product name="Home" key={item._id} item={item} />}
+                            />
                         </View>
                     </View>
                     <View className="mt-[50px] pl-10 mb-[100px]">
@@ -178,14 +197,15 @@ const HomeScreen = () => {
                             <Text className="font-bold text-xl tracking-[4px] text-main">HOT</Text>
                             <Text className="text-xs text-main text-right ">All({total}) &gt;</Text>
                         </View>
-                        <View className="flex flex-row">
-                            <ScrollView
-                                horizontal
+                        <View>
+                            <FlatList
+                                horizontal={true}
                                 showsHorizontalScrollIndicator={false}
                                 contentContainerStyle={{ paddingTop: 20 }}
-                            >
-                                {hots && hots.map((item) => <Product name="Home" key={item._id} item={item} />)}
-                            </ScrollView>
+                                data={hots}
+                                keyExtractor={(item, idx) => item._id + idx}
+                                renderItem={({ item }) => <Product name="Home" key={item._id} item={item} />}
+                            />
                         </View>
                     </View>
                 </View>

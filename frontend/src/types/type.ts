@@ -23,6 +23,7 @@ export type User = {
 
 export type upUser = {
     user: string;
+    email: string;
     fullName: string;
     gender: string;
     birthDay: string;
@@ -63,12 +64,12 @@ export type Product = {
 
 export type Variant = {
     listColor: string[];
-    listSize: string[];
+    listSize: number[];
     quantity: number;
 };
 
 export type Address = {
-    _id: string;
+    _id?: string;
     user: string;
     receiver: string;
     phone: string;
@@ -76,7 +77,7 @@ export type Address = {
     districts: string;
     wards: string;
     specific: string;
-    default: boolean;
+    default?: boolean;
 };
 
 export type AddressLess = {
@@ -109,6 +110,7 @@ export type ItemCart = {
     size: string;
     quantity: number;
     price: number;
+    selected?: boolean;
 };
 
 export type Cart = {
@@ -193,4 +195,10 @@ export type findProduct = {
 export type orderStatus = {
     status: string;
     user: string;
+};
+
+export type RVariant = {
+    size: number;
+    color: string;
+    quantity: number;
 };

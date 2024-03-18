@@ -10,11 +10,10 @@ module.exports = {
                 background: '#F2F2F2',
                 gray1: '#C7C7C7',
                 gray2: '#3D3D3D',
+                gray3: '#D9D9D9',
                 search: '#F9F9F9',
                 money: '#FF952D',
-            },
-            dropShadow: {
-                navbar: '0px 2px 20px 0 rgba(255,255,255,0.05)',
+                red: '#FF3333',
             },
         },
     },

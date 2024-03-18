@@ -11,7 +11,6 @@ type Props = {
 };
 const Product = ({ name, item }: Props) => {
     const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
-
     return (
         <View
             key={item._id}
