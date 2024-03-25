@@ -1,11 +1,28 @@
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ArrowLeftIcon } from 'react-native-heroicons/outline';
 import AddressItem from '../components/AddressItem';
+import axios from '../utils/axios';
+import { useRoute } from '@react-navigation/native';
+
+type Params = {
+    user: string;
+};
 
 const ListAddressScreen = () => {
+    const route = useRoute();
+    const { user } = route.params as Params;
     const [address, setAddress] = useState([]);
+    useEffect(() => {
+        const fetchData = async () => {
+            const { data } = await axios.get(`/address/user?user=${user}&pageSize=5&pageNumber=1`);
+            if (data.success) {
+                setAddress(data.data);
+            }
+        };
+        fetchData();
+    });
     return (
         <SafeAreaView>
             <View className="relative h-screen p-10">
@@ -16,7 +33,11 @@ const ListAddressScreen = () => {
                     <Text className="font-medium text-xl">Delivery Address</Text>
                 </View>
                 <View className="mt-7">
-                    <FlatList showsVerticalScrollIndicator data={address} renderItem={(item) => <AddressItem />} />
+                    <FlatList
+                        showsVerticalScrollIndicator
+                        data={address}
+                        renderItem={({ item }) => <AddressItem item={item} />}
+                    />
                 </View>
 
                 <View className="absolute bottom-0">

@@ -51,6 +51,7 @@ export type Product = {
     _id: string;
     name: string;
     images: string[];
+    image: string;
     desc: string;
     category: Category;
     brand: string;
@@ -60,6 +61,7 @@ export type Product = {
     status?: string;
     variant: Variant;
     isStock?: boolean;
+    isFavorite: boolean;
 };
 
 export type Variant = {

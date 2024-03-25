@@ -5,6 +5,7 @@ import { NavigationContainer, ParamListBase, useNavigation } from '@react-naviga
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { User } from '../types/type';
+import axios from '../utils/axios';
 
 type Props = {
     name: string;
@@ -44,7 +45,7 @@ const Navbar = ({ name }: Props) => {
             <TouchableOpacity onPress={() => navigation.navigate('Home')}>
                 <HomeIcon color={`${name === 'Home' ? '#33A0FF' : '#ADADAF'}`} />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate('Favorite')}>
+            <TouchableOpacity onPress={() => navigation.navigate('Favorite', { id: profile?._id })}>
                 <HeartIcon color={`${name === 'Favorites' ? '#33A0FF' : '#ADADAF'}`} />
             </TouchableOpacity>
             <TouchableOpacity onPress={check}>

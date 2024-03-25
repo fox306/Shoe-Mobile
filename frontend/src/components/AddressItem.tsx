@@ -1,8 +1,13 @@
 import { View, Text } from 'react-native';
 import React from 'react';
 import { Switch } from 'react-native-paper';
+import { Address } from '../types/type';
 
-const AddressItem = () => {
+type Props = {
+    item: Address;
+};
+
+const AddressItem = ({ item }: Props) => {
     return (
         <View className="px-[20px] pt-[10px] pb-[6px]">
             <View className="w-full flex flex-row justify-between items-center pb-[10px] border-b border-opacity-30">

@@ -72,9 +72,9 @@ const DetailScreen = () => {
     useEffect(() => {
         try {
             const fetchItem = async () => {
-                const { data } = await axios.get(`/products/detail?product=${id}`);
+                const { data } = await axios.get(`/products/${id}`);
                 if (data.success) {
-                    setItem(data.data.product);
+                    setItem(data.data);
                     setRVariant(data.data.randomVar);
                     setListVariant(data.data.variants);
                 }

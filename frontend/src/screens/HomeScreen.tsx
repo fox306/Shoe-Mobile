@@ -23,16 +23,9 @@ import Navbar from '../components/Navbar';
 import { Category as C, Product as P } from '../types/type';
 import Loading from '../components/Loading';
 
-type Params = {
-    id: string;
-};
-
 const HomeScreen = () => {
     const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
-
     const [user, setUser] = useState<string | null>(null);
-    const [id, setId] = useState<string | null>(null);
-
     const [items, setItems] = useState<P[]>();
     const [hots, setHots] = useState<P[]>();
     const [category, setCategory] = useState<C[]>();
@@ -40,6 +33,7 @@ const HomeScreen = () => {
     const [cateId, setCateId] = useState('');
     const [total, setTotal] = useState(0);
     const [keyword, setKeyword] = useState('');
+    const [load, setLoad] = useState<boolean>(false);
     // const getUser = async () => {
     //     const user = await AsyncStorage.getItem('token');
     //     console.log(user);
@@ -54,7 +48,7 @@ const HomeScreen = () => {
 
     const performSearch = () => {
         // console.log('Perform search with:', searchText);
-        navigation.navigate('Search', { keyword: keyword });
+        navigation.navigate('Search', { keyword: keyword, user: user });
         Keyboard.dismiss();
     };
 
@@ -72,7 +66,6 @@ const HomeScreen = () => {
 
         getProfile();
     }, []);
-
     useEffect(() => {
         try {
             const fetchCate = async () => {
@@ -87,21 +80,20 @@ const HomeScreen = () => {
             console.log(error);
         }
     }, []);
-
     useEffect(() => {
         try {
             const fetchItems = async () => {
-                const { data } = await axios.get(`/products/category?category=${cateId}`);
+                const { data } = await axios.get(`/products/find/by-category?category=${cateId}&pageSize=5`);
                 if (data.success) {
                     setItems(data.data);
+                    console.log(data.data);
                 }
             };
             fetchItems();
         } catch (error) {
             console.log(error);
         }
-    }, [cateId]);
-
+    }, [cateId, load]);
     useEffect(() => {
         try {
             const fetchItems = async () => {
@@ -188,7 +180,16 @@ const HomeScreen = () => {
                                 contentContainerStyle={{ paddingTop: 20 }}
                                 data={items}
                                 keyExtractor={(item, idx) => item._id + idx}
-                                renderItem={({ item }) => <Product name="Home" key={item._id} item={item} />}
+                                renderItem={({ item }) => (
+                                    <Product
+                                        name="Home"
+                                        key={item._id}
+                                        item={item}
+                                        user={user}
+                                        setLoad={setLoad}
+                                        load={load}
+                                    />
+                                )}
                             />
                         </View>
                     </View>
@@ -204,7 +205,16 @@ const HomeScreen = () => {
                                 contentContainerStyle={{ paddingTop: 20 }}
                                 data={hots}
                                 keyExtractor={(item, idx) => item._id + idx}
-                                renderItem={({ item }) => <Product name="Home" key={item._id} item={item} />}
+                                renderItem={({ item }) => (
+                                    <Product
+                                        name="Home"
+                                        key={item._id}
+                                        item={item}
+                                        user={user}
+                                        setLoad={setLoad}
+                                        load={load}
+                                    />
+                                )}
                             />
                         </View>
                     </View>

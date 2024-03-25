@@ -45,7 +45,7 @@ const RegisterScreen = () => {
             return;
         }
         try {
-            const { data } = await axios.post('/auth/sendCode', {
+            const { data } = await axios.post('/auths/sendOTP', {
                 email: user.email,
             });
             if (data.success) {
@@ -53,7 +53,7 @@ const RegisterScreen = () => {
                     type: 'success',
                     text1: 'Send Code Success',
                 });
-                navigation.navigate('Code', { user: user, checked: checked, code: data.code, active: 1 });
+                navigation.navigate('Code', { user: user, checked: checked, code: data.data, active: 1 });
             }
         } catch (err: any) {
             console.log(err);

@@ -24,6 +24,20 @@ const CodeScreen = () => {
     console.log('CODE: ', code);
     console.log('ACTIVE: ', active);
     const [checkCode, setCheckCode] = useState<string>();
+
+    const convertDateFormat = () => {
+        const parts = user.birthDay.split('/');
+        const day = parts[0];
+        const month = parts[1];
+        const year = parts[2];
+
+        // Tạo chuỗi mới với định dạng "dd-mm-yyyy"
+        const newDateString = `${year}-${month}-${day}`;
+
+        return newDateString;
+    };
+    console.log(convertDateFormat());
+
     const handleSubmit = async () => {
         if (checkCode !== code.toString()) {
             Toast.show({
@@ -35,13 +49,14 @@ const CodeScreen = () => {
 
         if (active === 1) {
             try {
-                const { data } = await axios.post('/auth/register', {
+                const { data } = await axios.post('/auths/register', {
                     email: user.email,
-                    fullName: user.fullName,
                     password: user.password,
+                    fullName: user.fullName,
                     gender: checked,
-                    birthDay: user.birthDay,
+                    birthDay: convertDateFormat(),
                 });
+                console.log(data);
                 if (data.success) {
                     Toast.show({
                         type: 'success',
@@ -50,12 +65,13 @@ const CodeScreen = () => {
                     navigation.navigate('Login');
                 }
             } catch (err: any) {
-                console.log(err);
+                console.log(err.config);
             }
         } else {
             navigation.navigate('Recovery', { email: email });
         }
     };
+    // console.log(checked);
     return (
         <ScrollView showsVerticalScrollIndicator={false} className="bg-second ">
             <View className="relative h-screen">

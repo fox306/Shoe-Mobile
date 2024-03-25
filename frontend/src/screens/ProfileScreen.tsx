@@ -25,19 +25,20 @@ const ProfileScreen = () => {
 
     const handleLogout = async () => {
         try {
-            const { data } = await axios.delete(`/auth/logout/${profile._id}`);
+            const { data } = await axios.post(`/auths/logout`);
             if (data.success) {
                 Toast.show({
                     type: 'success',
                     text1: 'Logout Success',
                 });
-                navigation.replace('Login');
-                AsyncStorage.clear();
             }
+            AsyncStorage.clear();
+            navigation.replace('Login');
         } catch (error) {
             console.log(error);
         }
     };
+
     return (
         <SafeAreaView className="bg-background" style={{ height: modifiedHeight }}>
             <ScrollView showsVerticalScrollIndicator={false}>
