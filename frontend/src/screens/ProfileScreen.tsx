@@ -56,27 +56,38 @@ const ProfileScreen = () => {
                     </View>
                     <View className="flex flex-col gap-[14px]">
                         <TouchableOpacity
-                            onPress={() => navigation.navigate('Order', { user: profile?._id })}
+                            onPress={() => navigation.navigate('Order', { id: profile?._id })}
                             className="w-full flex flex-row items-center justify-between py-4 px-[30px] bg-white rounded-[20px]"
                         >
                             <Text className="font-medium text-lg">Orders</Text>
                             <ChevronRightIcon color="black" width={24} height={24} />
                         </TouchableOpacity>
-                        <View className="w-full flex flex-row items-center justify-between py-4 px-[30px] bg-white rounded-[20px]">
+                        <TouchableOpacity
+                            onPress={() => navigation.navigate('Favorite', { id: profile?._id })}
+                            className="w-full flex flex-row items-center justify-between py-4 px-[30px] bg-white rounded-[20px]"
+                        >
                             <Text className="font-medium text-lg">Favorites</Text>
 
                             <ChevronRightIcon color="black" width={24} height={24} />
-                        </View>
+                        </TouchableOpacity>
                         <View className="w-full flex flex-row items-center justify-between py-4 px-[30px] bg-white rounded-[20px]">
                             <Text className="font-medium text-lg">Change Password</Text>
 
                             <ChevronRightIcon color="black" width={24} height={24} />
                         </View>
                         <TouchableOpacity
-                            onPress={() => navigation.navigate('ListAddress', { user: profile?._id })}
+                            onPress={() => navigation.navigate('ListAddress', { id: profile?._id })}
                             className="w-full flex flex-row items-center justify-between py-4 px-[30px] bg-white rounded-[20px]"
                         >
                             <Text className="font-medium text-lg">Delivery Addresses</Text>
+
+                            <ChevronRightIcon color="black" width={24} height={24} />
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => navigation.navigate('Coupon', { id: profile?._id })}
+                            className="w-full flex flex-row items-center justify-between py-4 px-[30px] bg-white rounded-[20px]"
+                        >
+                            <Text className="font-medium text-lg">Coupons</Text>
 
                             <ChevronRightIcon color="black" width={24} height={24} />
                         </TouchableOpacity>

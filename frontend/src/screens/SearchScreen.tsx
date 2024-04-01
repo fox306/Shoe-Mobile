@@ -24,7 +24,6 @@ const SearchScreen = () => {
     const route = useRoute();
     const { keyword, user } = route.params as RouteParams;
     const [items, setItems] = useState<P[]>([]);
-    const [total, setTotal] = useState(0);
     const [keyword2, setKeyword2] = useState('');
     const [load, setLoad] = useState<boolean>(false);
 
@@ -55,7 +54,6 @@ const SearchScreen = () => {
                 );
                 if (data.success) {
                     setItems(data.data);
-                    setTotal(data.total);
                 }
                 console.log(data);
             };
@@ -64,8 +62,6 @@ const SearchScreen = () => {
             console.log(error);
         }
     }, [keyword]);
-    console.log(items);
-    console.log('Tong', total);
     return (
         <SafeAreaView>
             <ScrollView showsVerticalScrollIndicator={false} className="relative h-screen bg-background">
@@ -90,46 +86,48 @@ const SearchScreen = () => {
                 </View>
 
                 <View>
-                    <Text className="text-center text-gray1">Found {total} results</Text>
+                    <Text className="text-center text-gray1">Found {items.length} results</Text>
                 </View>
-
-                <View className="mt-5 mx-5">
-                    {items.length === 0 ? (
-                        // <View className="flex flex-col items-center justify-center">
-                        //     <MagnifyingGlassIcon color="#C7C7C7" width={122} height={122} />
-                        //     <Text className="font-medium text-3xl">Shoes not found</Text>
-                        //     <Text className="font-base opacity-70">
-                        //         Try searching the item with a different keyword.
-                        //     </Text>
-                        // </View>
-                        <Loading />
-                    ) : (
-                        <View>
-                            <MasonryList
-                                data={items}
-                                keyExtractor={(item): string => item.id}
-                                numColumns={2}
-                                showsVerticalScrollIndicator={false}
-                                renderItem={({ item }) => (
-                                    <View className="mb-[40px]">
-                                        <Product
-                                            name="Search"
-                                            item={item as P}
-                                            user={user}
-                                            setLoad={setLoad}
-                                            load={load}
-                                        />
-                                    </View>
-                                )}
-                                // refreshing={isLoadingNext}
-                                // onRefresh={() => refetch({ first: ITEM_CNT })}
-                                onEndReachedThreshold={0.1}
-                                // contentContainerStyle={{ paddingBottom: 30 }}
-                                // onEndReached={() => loadNext(ITEM_CNT)}
-                            />
-                        </View>
-                    )}
-                </View>
+                {items && (
+                    <View className="mt-5 mx-5">
+                        {items.length === 0 ? (
+                            // <View className="flex flex-col items-center justify-center">
+                            //     <MagnifyingGlassIcon color="#C7C7C7" width={122} height={122} />
+                            //     <Text className="font-medium text-3xl">Shoes not found</Text>
+                            //     <Text className="font-base opacity-70">
+                            //         Try searching the item with a different keyword.
+                            //     </Text>
+                            // </View>
+                            <Loading name="Search" />
+                        ) : (
+                            <View>
+                                <MasonryList
+                                    data={items}
+                                    keyExtractor={(item): string => item.id}
+                                    numColumns={2}
+                                    showsVerticalScrollIndicator={false}
+                                    contentContainerStyle={{ paddingTop: 20 }}
+                                    renderItem={({ item }) => (
+                                        <View className="mb-[40px]">
+                                            <Product
+                                                name="Search"
+                                                item={item as P}
+                                                user={user}
+                                                setLoad={setLoad}
+                                                load={load}
+                                            />
+                                        </View>
+                                    )}
+                                    // refreshing={isLoadingNext}
+                                    // onRefresh={() => refetch({ first: ITEM_CNT })}
+                                    onEndReachedThreshold={0.1}
+                                    // contentContainerStyle={{ paddingBottom: 30 }}
+                                    // onEndReached={() => loadNext(ITEM_CNT)}
+                                />
+                            </View>
+                        )}
+                    </View>
+                )}
 
                 {/* https://github.com/hyochan/react-native-masonry-list */}
             </ScrollView>

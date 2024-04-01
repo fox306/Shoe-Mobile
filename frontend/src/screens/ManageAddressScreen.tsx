@@ -32,7 +32,7 @@ const ManageAddressScreen = () => {
     };
 
     const handleCreate = async () => {
-        const { data } = await axios.post('/address', {
+        const { data } = await axios.post('/deliveryAddress', {
             user: userId,
             receiver: address.receiver,
             phone: address.phone,
@@ -100,7 +100,7 @@ const ManageAddressScreen = () => {
                     <Text className="text-base">Default</Text>
                     <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />
                 </View>
-                <View className="w-full mt-[100px] mb-20">
+                <View className="w-full mt-[140px] mb-20">
                     <TouchableOpacity
                         className="w-full h-[60px] px-[10px] rounded-[30px] bg-main flex items-center justify-center"
                         onPress={handleCreate}

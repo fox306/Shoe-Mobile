@@ -62,7 +62,9 @@ const CartItem = ({ data, onCheckedItem, onRemoveItem, type }: Props) => {
                                         <Text className="text-xs">Size: {data.size}</Text>
                                         <View className="flex flex-row items-center gap-1 mx-[15px]">
                                             <Text className="text-xs">Color:</Text>
-                                            <View className="relative w-[10px] h-[10px] bg-[#FFBE00] rounded-full">
+                                            <View
+                                                className={`relative w-[10px] h-[10px] bg-[${data.hex.toString()}] rounded-full`}
+                                            >
                                                 <View className="absolute left-[-2px] top-[-2px] p-[5px] rounded-full border-2 border-gray1"></View>
                                             </View>
                                         </View>
@@ -91,7 +93,9 @@ const CartItem = ({ data, onCheckedItem, onRemoveItem, type }: Props) => {
                                 <Text className="text-xs">Size: {data.size}</Text>
                                 <View className="flex flex-row items-center gap-1 mx-[15px]">
                                     <Text className="text-xs">Color:</Text>
-                                    <View className="relative w-[10px] h-[10px] bg-[#FFBE00] rounded-full">
+                                    <View
+                                        className={`relative w-[10px] h-[10px] bg-[${data.hex.toString()}] rounded-full`}
+                                    >
                                         <View className="absolute left-[-2px] top-[-2px] p-[5px] rounded-full border-2 border-gray1"></View>
                                     </View>
                                 </View>

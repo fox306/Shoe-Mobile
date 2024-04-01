@@ -32,9 +32,9 @@ const Navbar = ({ name }: Props) => {
         getToken();
         getProfile();
     }, []);
-    const check = async () => {
+    const check = async (name: string) => {
         if (token) {
-            navigation.navigate('Profile', { profile: profile });
+            navigation.navigate(name, { id: profile?._id, profile: profile });
         } else {
             navigation.navigate('Login');
         }
@@ -45,13 +45,13 @@ const Navbar = ({ name }: Props) => {
             <TouchableOpacity onPress={() => navigation.navigate('Home')}>
                 <HomeIcon color={`${name === 'Home' ? '#33A0FF' : '#ADADAF'}`} />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate('Favorite', { id: profile?._id })}>
+            <TouchableOpacity onPress={() => check('Favorite')}>
                 <HeartIcon color={`${name === 'Favorites' ? '#33A0FF' : '#ADADAF'}`} />
             </TouchableOpacity>
-            <TouchableOpacity onPress={check}>
+            <TouchableOpacity onPress={() => check('Profile')}>
                 <UserIcon color={`${name === 'Profile' ? '#33A0FF' : '#ADADAF'}`} />
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => check('Order')}>
                 <QueueListIcon color={`${name === 'Orders' ? '#33A0FF' : '#ADADAF'}`} />
             </TouchableOpacity>
         </View>

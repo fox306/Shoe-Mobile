@@ -15,31 +15,32 @@ type Props = {
 };
 
 const colors: { [key: string]: string } = {
-    Blue: 'bg-[#006CFF]',
     Red: 'bg-[#FC3E39]',
+    Blue: 'bg-[#0000FF]',
+    Gray: 'bg-[#808080]',
+    Cyan: 'bg-[#00FFFF]',
+    Pink: 'bg-[#FFC0CB]',
+    Green: 'bg-[#00FF00]',
     Black: 'bg-[#171717]',
-    Pink: 'bg-[#FF00B4]',
-    Yellow: 'bg-[#FFF600]',
-    Wheat: 'bg-[#EFDFDF]',
-};
-const borders: { [key: string]: string } = {
-    Blue: 'border-[#006CFF]',
-    Red: 'border-[#FC3E39]',
-    Black: 'border-[#171717]',
-    Pink: 'border-[#FF00B4]',
-    Yellow: 'border-[#FFF600]',
-    Wheat: 'border-[#EFDFDF]',
+    White: 'bg-[#FFFFFF]',
+    Brown: 'bg-[#A52A2A]',
+    Purple: 'bg-[#800080]',
+    Yellow: 'bg-[#FFFF00]',
+    Orange: 'bg-[#FFA500]',
+    Silver: 'bg-[#C0C0C0]',
 };
 
 const Comfirm = ({ rVariant, listVariant, id, item, user }: Props) => {
     const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
     const [items, setItems] = useState<RVariant>({
-        size: rVariant?.size ?? 0,
         color: rVariant?.color ?? '',
+        hex: rVariant?.hex ?? '',
+        image: rVariant?.image ?? '',
         quantity: rVariant?.quantity ?? 0,
+        size: rVariant?.size ?? 0,
     });
-
+    console.log(colors[items.color]);
     const [quantity, setQuantity] = useState<number>(1);
 
     const handleDes = () => {
@@ -55,10 +56,10 @@ const Comfirm = ({ rVariant, listVariant, id, item, user }: Props) => {
         }
     };
     const handleSetSize = (newSize: number) => {
-        setItems({ size: newSize, color: '', quantity: 0 });
+        setItems({ size: newSize, color: '', quantity: 0, hex: '', image: '' });
     };
-    const handleSetColor = (newColor: string) => {
-        setItems({ ...items, color: newColor });
+    const handleSetColor = (newColor: string, hex: string) => {
+        setItems({ ...items, color: newColor, hex: hex });
     };
 
     const handleAddCart = async () => {
@@ -70,7 +71,6 @@ const Comfirm = ({ rVariant, listVariant, id, item, user }: Props) => {
             color: items.color,
             size: items.size,
             quantity: quantity,
-            price: item?.price,
         });
         if (data.success) {
             Toast.show({
@@ -85,7 +85,7 @@ const Comfirm = ({ rVariant, listVariant, id, item, user }: Props) => {
         try {
             const getQuantity = async () => {
                 const { data } = await axios.get(
-                    `/variants/product/color/size?product=${id}&color=${items.color}&size=${items.size}`,
+                    `/variants/find/by-info?product=${id}&size=${items.size}&color=${items.color}`,
                 );
                 if (data.success) {
                     setItems({ ...items, quantity: data.data.quantity });
@@ -102,7 +102,7 @@ const Comfirm = ({ rVariant, listVariant, id, item, user }: Props) => {
         <View className="absolute bottom-0 w-screen h-auto bg-white rounded-[30px]">
             <View className="p-5">
                 <View className="w-full border-b border-gray1 pb-[10px]">
-                    <Text className="text-center font-bold text-base">Nike Air Force 1</Text>
+                    <Text className="text-center font-bold text-base">{item?.name}</Text>
                 </View>
                 <View className="py-5 px-10">
                     <Text className="font-semibold">Size</Text>
@@ -112,7 +112,7 @@ const Comfirm = ({ rVariant, listVariant, id, item, user }: Props) => {
                                 key={item}
                                 className={`w-10 h-10 ${
                                     item === items.size ? 'bg-main' : 'bg-gray1'
-                                } bg-main rounded-[15px] flex items-center justify-center`}
+                                } rounded-[15px] flex items-center justify-center`}
                             >
                                 <TouchableOpacity onPress={() => handleSetSize(item)}>
                                     <Text
@@ -131,11 +131,11 @@ const Comfirm = ({ rVariant, listVariant, id, item, user }: Props) => {
                     <Text className="font-semibold">Color</Text>
                     <View className="flex flex-row gap-5 mt-[5px]">
                         {listVariant?.listColor.map((item) => (
-                            <View key={item} className={`relative w-5 h-5 ${colors[item]} rounded-full`}>
-                                <TouchableOpacity onPress={() => handleSetColor(item)}>
+                            <View key={item.hex} className={`relative w-5 h-5 ${colors[item.color]} rounded-full`}>
+                                <TouchableOpacity onPress={() => handleSetColor(item.color, item.hex)}>
                                     <View
                                         className={`absolute left-[-3px] top-[-3px] p-2.5 rounded-full border-[3px] ${
-                                            item === items.color ? 'border-gray1' : ''
+                                            item.color === items.color ? 'border-gray1' : ''
                                         } `}
                                     ></View>
                                 </TouchableOpacity>

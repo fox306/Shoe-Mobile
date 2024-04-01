@@ -65,9 +65,14 @@ export type Product = {
 };
 
 export type Variant = {
-    listColor: string[];
+    listColor: detailVariant[];
     listSize: number[];
-    quantity: number;
+};
+
+export type detailVariant = {
+    color: string;
+    hex: string;
+    image: string;
 };
 
 export type Address = {
@@ -104,11 +109,11 @@ export type UpdateAddress = {
 };
 
 export type ItemCart = {
-    user?: string;
     product: string;
     image: string;
     name: string;
     color: string;
+    hex: string;
     size: string;
     quantity: number;
     price: number;
@@ -200,7 +205,35 @@ export type orderStatus = {
 };
 
 export type RVariant = {
-    size: number;
     color: string;
+    hex: string;
+    image: string;
+    size: number;
     quantity: number;
+};
+
+export type Comment = {
+    _id: string;
+    commentator: Commentator;
+    product: string;
+    rating: number;
+    like: number;
+    images: string;
+};
+export type Commentator = {
+    _id: string;
+    fullName: string;
+    avatar: string;
+};
+export type Coupon = {
+    _id: string;
+    code: string;
+    name: string;
+    value: number;
+    type: string;
+    maxDiscount: number;
+    minAmount: number;
+    validityDuration: 10;
+    startDate: string;
+    endDate: string;
 };

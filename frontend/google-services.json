@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "43062734152",
+    "project_id": "notifications-ac382",
+    "storage_bucket": "notifications-ac382.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:43062734152:android:b30cdd876d5457c481177d",
+        "android_client_info": {
+          "package_name": "com.example.push_notification"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDv2cX9DIqHlIJH1xlQlob_kLHL3bp4c5I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:43062734152:android:2ef87477e6df8ab581177d",
+        "android_client_info": {
+          "package_name": "com.fox306x.Shoes_Mobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDv2cX9DIqHlIJH1xlQlob_kLHL3bp4c5I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

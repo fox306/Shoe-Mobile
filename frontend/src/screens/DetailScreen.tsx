@@ -15,21 +15,25 @@ import data, { OnboardingData } from '../data/data';
 import Pagination from '../components/Pagination';
 import Image from '../components/Image';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Rating } from '@mui/material';
 import Review from '../components/Review';
 import ProductInfo from '../components/ProductInfo';
-import { HeartIcon } from 'react-native-heroicons/outline';
-import { Product, RVariant, User, Variant } from '../types/type';
+import { Comment, Product, RVariant, User, Variant } from '../types/type';
 import axios from '../utils/axios';
-import { useRoute } from '@react-navigation/native';
+import { ParamListBase, useNavigation, useRoute } from '@react-navigation/native';
 import Comfirm from '../components/Comfirm';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Rating } from '@kolking/react-native-rating';
+import { HeartIcon as NoF } from 'react-native-heroicons/outline';
+import { HeartIcon as F } from 'react-native-heroicons/solid';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 type RouteParams = {
     id: string;
 };
 
 const DetailScreen = () => {
+    const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
+
     const flatListRef = useAnimatedRef<FlatList<OnboardingData>>();
     const x = useSharedValue(0);
     const flatListIndex = useSharedValue(0);
@@ -54,12 +58,49 @@ const DetailScreen = () => {
     const [listVariant, setListVariant] = useState<Variant>();
     const [active, setActive] = useState(false);
     const [profile, setProfile] = useState<User>();
+    const [form, setForm] = useState(false);
+    const [load, setLoad] = useState(false);
 
     const containerRef = useRef<View>(null);
+    const [comment, setComment] = useState<Comment[]>();
 
     const handlePressOutside = () => {
         setActive(false);
     };
+
+    const handleFavorite = async () => {
+        if (!profile) {
+            navigation.navigate('Login');
+            return;
+        }
+        if (item) {
+            if (item.isFavorite) {
+                const { data } = await axios.delete(`/favorites/un-favorite/${item._id}`);
+                if (data.success) {
+                    setLoad(!load);
+                }
+            } else {
+                const { data } = await axios.post('/favorites', {
+                    user: profile._id,
+                    product: item._id,
+                });
+                if (data.success) {
+                    setLoad(!load);
+                }
+            }
+        }
+    };
+    console.log(id);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const { data } = await axios.get(`/comments/find/by-product?product=${id}`);
+            if (data.success) {
+                setComment(data.data);
+            }
+        };
+        fetchData();
+    }, [load]);
 
     useEffect(() => {
         const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', handlePressOutside);
@@ -75,7 +116,7 @@ const DetailScreen = () => {
                 const { data } = await axios.get(`/products/${id}`);
                 if (data.success) {
                     setItem(data.data);
-                    setRVariant(data.data.randomVar);
+                    setRVariant(data.data.randomVariant);
                     setListVariant(data.data.variants);
                 }
             };
@@ -126,27 +167,32 @@ const DetailScreen = () => {
                             <Text className="mt-5 mb-[10px] font-bold text-xl">{item.name}</Text>
                             <Text className="text-xl text-money mb-[10px]">${item.price}</Text>
                             <View className="flex flex-row mb-10">
-                                {/* <Rating readOnly value={5} size="small" className="mr-44px" /> */}
-                                <Text>Sumbit a Review</Text>
+                                <Rating baseColor="#FF952D" disabled size={18} rating={5} />
+                                {/* <Text>Sumbit a Review</Text> */}
                             </View>
                             <View className="flex flex-row items-center">
-                                <View className="w-[140px] border-b-[3px] border-main">
-                                    <TouchableOpacity>
-                                        <Text className="text-main font-semibold text-base text-center">
+                                <View className={`w-[140px] ${form ? '' : 'border-b-[3px] border-main'}`}>
+                                    <TouchableOpacity onPress={() => setForm(false)}>
+                                        <Text
+                                            className={`${form ? '' : 'text-main'} font-semibold text-base text-center`}
+                                        >
                                             Infomation
                                         </Text>
                                     </TouchableOpacity>
                                 </View>
-                                <View className="w-[140px]">
-                                    <TouchableOpacity>
-                                        <Text className="font-semibold text-base text-center">Review</Text>
+                                <View className={`w-[140px] ${form ? 'border-b-[3px] border-main' : ''}`}>
+                                    <TouchableOpacity onPress={() => setForm(true)}>
+                                        <Text
+                                            className={`${form ? 'text-main' : ''} font-semibold text-base text-center`}
+                                        >
+                                            Review
+                                        </Text>
                                     </TouchableOpacity>
                                 </View>
                             </View>
                             <View className="p-5 w-full">
                                 <View className="w-full h-[302px] bg-white mt-[10px] mb-40 rounded-[10px]">
-                                    {/* <Review /> */}
-                                    <ProductInfo info={item.desc} />
+                                    {form ? <Review comment={comment} /> : <ProductInfo info={item.desc} />}
                                 </View>
                             </View>
                         </View>
@@ -160,7 +206,11 @@ const DetailScreen = () => {
                                 <Text className="font-bold text-xl text-white text-center">Add To Cart</Text>
                             </TouchableOpacity>
                         </View>
-                        <HeartIcon width={36} height={32} color="black" />
+                        {item && item.isFavorite ? (
+                            <F size={36} color="red" onPress={handleFavorite} />
+                        ) : (
+                            <NoF size={36} color="#000000" onPress={handleFavorite} />
+                        )}
                     </View>
                 </View>
                 {active && (
