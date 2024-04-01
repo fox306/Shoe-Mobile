@@ -7,9 +7,9 @@ node_modules/
 .expo/
 dist/
 web-build/
-google-services
-eas
-notifications-ac382-firebase-adminsdk-m6xr5-cd14730efc
+google-services.json
+eas.json
+notifications-ac382-firebase-adminsdk-m6xr5-cd14730efc.json
 
 # Native
 *.orig.*
