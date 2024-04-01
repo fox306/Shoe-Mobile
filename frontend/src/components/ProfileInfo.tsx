@@ -7,6 +7,11 @@ type Props = {
     profile: User;
 };
 const ProfileInfo = ({ profile }: Props) => {
+    const date = new Date(profile.birthDay);
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    const convertDate = `${day}/${month < 10 ? '0' + month : month}/${year}`;
     return (
         <View className="w-full h-[197px] flex flex-row items-end pt-[16px] pb-10 bg-white rounded-[20px]">
             <Image
@@ -24,7 +29,7 @@ const ProfileInfo = ({ profile }: Props) => {
                         <Text className="text-center my-[10px]">{profile.phone}</Text>
                     </View>
                     <View>
-                        <Text className="mt-[10px]">{profile.birthDay}</Text>
+                        <Text className="mt-[10px]">{convertDate}</Text>
                     </View>
                 </View>
             </View>

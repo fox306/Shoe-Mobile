@@ -5,6 +5,7 @@ import { NavigationContainer, ParamListBase, useNavigation } from '@react-naviga
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { User } from '../types/type';
+import axios from '../utils/axios';
 
 type Props = {
     name: string;
@@ -31,9 +32,9 @@ const Navbar = ({ name }: Props) => {
         getToken();
         getProfile();
     }, []);
-    const check = async () => {
+    const check = async (name: string) => {
         if (token) {
-            navigation.navigate('Profile', { profile: profile });
+            navigation.navigate(name, { id: profile?._id, profile: profile });
         } else {
             navigation.navigate('Login');
         }
@@ -44,13 +45,13 @@ const Navbar = ({ name }: Props) => {
             <TouchableOpacity onPress={() => navigation.navigate('Home')}>
                 <HomeIcon color={`${name === 'Home' ? '#33A0FF' : '#ADADAF'}`} />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate('Favorite')}>
+            <TouchableOpacity onPress={() => check('Favorite')}>
                 <HeartIcon color={`${name === 'Favorites' ? '#33A0FF' : '#ADADAF'}`} />
             </TouchableOpacity>
-            <TouchableOpacity onPress={check}>
+            <TouchableOpacity onPress={() => check('Profile')}>
                 <UserIcon color={`${name === 'Profile' ? '#33A0FF' : '#ADADAF'}`} />
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => check('Order')}>
                 <QueueListIcon color={`${name === 'Orders' ? '#33A0FF' : '#ADADAF'}`} />
             </TouchableOpacity>
         </View>

@@ -3,9 +3,9 @@ import { useState } from 'react';
 import { ParamListBase, useNavigation } from '@react-navigation/native';
 import { SignIn } from '../types/type';
 import axios from '../utils/axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import Toast from 'react-native-toast-message';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LoginScreen = () => {
     const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
@@ -36,19 +36,25 @@ const LoginScreen = () => {
             return;
         }
         try {
-            const { data } = await axios.post('/auth/login', {
+            const { data } = await axios.post('/auths/login', {
                 email: user.email,
                 password: user.password,
             });
-            console.log(data);
+            console.log(data.data);
             if (data.success) {
-                AsyncStorage.setItem('token', data.accessToken);
-                AsyncStorage.setItem('user', JSON.stringify(data.data));
+                if (data.data.token) {
+                    await AsyncStorage.setItem('token', data.data.token);
+                    console.log('Hi');
+                }
+
+                if (data.data.user) {
+                    await AsyncStorage.setItem('user', JSON.stringify(data.data.user));
+                }
                 Toast.show({
                     type: 'success',
                     text1: 'Login Success',
                 });
-                navigation.replace('Home', { id: data.data._id });
+                navigation.replace('Home');
             } else {
                 Toast.show({
                     type: 'error',
@@ -56,10 +62,7 @@ const LoginScreen = () => {
                 });
             }
         } catch (error) {
-            Toast.show({
-                type: 'error',
-                text1: 'Wrong Info',
-            });
+            console.log(error);
         }
     };
     return (

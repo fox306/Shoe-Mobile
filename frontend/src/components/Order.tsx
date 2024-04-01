@@ -1,14 +1,20 @@
-import { View, Text, Image, TouchableOpacity } from 'react-native';
-import React from 'react';
-import { Order as O } from '../types/type';
+import { View, Text, Image, TouchableOpacity, Keyboard } from 'react-native';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { ItemCart, Order as O } from '../types/type';
 import { ParamListBase, useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 type Props = {
     item: O;
+    setForm: Dispatch<SetStateAction<boolean>>;
+    setProduct: Dispatch<SetStateAction<ItemCart[]>>;
 };
 
-const Order = ({ item }: Props) => {
+const Order = ({ item, setForm, setProduct }: Props) => {
     const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
+    const handleClick = () => {
+        setForm(true);
+        setProduct(item.items);
+    };
 
     return (
         <TouchableOpacity onPress={() => navigation.navigate('OrderDetail', { id: item._id, user: item.user })}>
@@ -35,7 +41,9 @@ const Order = ({ item }: Props) => {
                                     <Text className="text-xs">Size: {order.size}</Text>
                                     <View className="flex flex-row items-center mx-[15px]">
                                         <Text className="text-xs">Color:</Text>
-                                        <View className="relative w-[10px] h-[10px] bg-[#FFBE00] rounded-full ml-[5px]">
+                                        <View
+                                            className={`relative w-[10px] h-[10px] bg-[${order.hex.toString()}] rounded-full ml-[5px]`}
+                                        >
                                             <View className="absolute left-[-2px] top-[-2px] p-[5px] rounded-full border-2 border-gray1"></View>
                                         </View>
                                     </View>
@@ -47,6 +55,13 @@ const Order = ({ item }: Props) => {
                 <View className="mt-[10px] w-full flex flex-row items-center justify-between">
                     <Text className="text-xs text-main">{item.status}</Text>
                     <Text className="text-money">Total: ${item.total}</Text>
+                    {item.status === 'Successful' && (
+                        <TouchableOpacity onPress={handleClick}>
+                            <View className="w-[80px] h-8 bg-main rounded-2xl flex items-center justify-center">
+                                <Text className="text-xs text-white">Review</Text>
+                            </View>
+                        </TouchableOpacity>
+                    )}
                 </View>
             </View>
         </TouchableOpacity>

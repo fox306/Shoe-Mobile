@@ -24,13 +24,7 @@ const CartScreen = () => {
     const [checkedAll, setCheckedAll] = useState<boolean>(false);
     const [selectedCart, setSelectedCart] = useState<ItemCart[]>([]);
     const [total, setTotal] = useState(0);
-    const fetchData = async () => {
-        const { data } = await axios.get(`/carts?user=${user}`);
-        if (data.success) {
-            setCart(data.data.items);
-            setCheckedAll(false);
-        }
-    };
+
     const handleFilterData = (data: ItemCart[]) => {
         const filterData = data.filter((item) => {
             return item.selected;
@@ -91,9 +85,15 @@ const CartScreen = () => {
         navigation.navigate('Checkout', { data: selectedCart, user: user, total: total });
     };
     useEffect(() => {
+        const fetchData = async () => {
+            const { data } = await axios.get(`/carts/user/${user}`);
+            if (data.success) {
+                setCart(data.data.items);
+                setCheckedAll(false);
+            }
+        };
         fetchData();
     }, []);
-
     useEffect(() => {
         handlePrice();
         validateSelectedAll();
