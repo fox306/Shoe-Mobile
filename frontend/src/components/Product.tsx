@@ -6,6 +6,7 @@ import { ParamListBase, useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Product as P } from '../types/type';
 import axios from '../utils/axios';
+import Toast from 'react-native-toast-message';
 
 type Props = {
     name: string;
@@ -38,6 +39,21 @@ const Product = ({ name, item, user, setLoad, load }: Props) => {
             }
         }
     };
+
+    const handleAddtoCart = async (e: GestureResponderEvent) => {
+        e.stopPropagation();
+
+        const { data } = await axios.post('/carts/addToCart/withoutVariant', {
+            user: user,
+            product: item._id,
+        });
+        if (data.success) {
+            Toast.show({
+                type: 'success',
+                text1: 'Add to Cart Success',
+            });
+        }
+    };
     return (
         <View className="flex flex-row justify-center">
             <TouchableOpacity
@@ -68,6 +84,7 @@ const Product = ({ name, item, user, setLoad, load }: Props) => {
                             className={`w-[100px] h-8 rounded-[36px] bg-main flex items-center justify-center ${
                                 name === 'Home' ? 'mr-5' : 'mr-2'
                             }`}
+                            onPress={handleAddtoCart}
                         >
                             <Text className="text-white">Add To Cart</Text>
                         </TouchableOpacity>

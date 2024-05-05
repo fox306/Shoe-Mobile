@@ -38,6 +38,7 @@ const ProfileScreen = () => {
             console.log(error);
         }
     };
+    console.log(profile);
 
     return (
         <SafeAreaView className="bg-background" style={{ height: modifiedHeight }}>
@@ -49,7 +50,9 @@ const ProfileScreen = () => {
                     </View>
                     <View className="flex flex-row items-center">
                         <Text className="font-medium text-lg flex-1">Personal details</Text>
-                        <Text className="text-main">Change</Text>
+                        <TouchableOpacity onPress={() => navigation.navigate('ChangeProfile', { profile: profile })}>
+                            <Text className="text-main">Change</Text>
+                        </TouchableOpacity>
                     </View>
                     <View className="mt-[10px] mb-[30px]">
                         <ProfileInfo profile={profile} />

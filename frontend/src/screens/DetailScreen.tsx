@@ -141,62 +141,57 @@ const DetailScreen = () => {
         <SafeAreaView className="bg-background">
             <ScrollView showsVerticalScrollIndicator={false} className="relative">
                 {item && (
-                    <TouchableWithoutFeedback onPress={handlePressOutside}>
-                        <View className="flex flex-col items-center justify-center">
-                            <Animated.FlatList
-                                ref={flatListRef}
-                                onScroll={onScroll}
-                                data={item.images}
-                                renderItem={({ item, index }) => {
-                                    return <Image key={item} item={item} index={index} x={x} />;
-                                }}
-                                keyExtractor={(item) => item.id}
-                                scrollEventThrottle={16}
-                                horizontal={true}
-                                bounces={false}
-                                pagingEnabled={true}
-                                showsHorizontalScrollIndicator={false}
-                                onViewableItemsChanged={onViewableItemsChanged}
-                                viewabilityConfig={{
-                                    minimumViewTime: 300,
-                                    viewAreaCoveragePercentThreshold: 10,
-                                }}
-                            />
-                            <View>{item?.images && <Pagination item={item.images} x={x} />}</View>
+                    // < onPress={handlePressOutside}>
+                    <View className="flex flex-col items-center justify-center" onTouchEnd={handlePressOutside}>
+                        <Animated.FlatList
+                            ref={flatListRef}
+                            onScroll={onScroll}
+                            data={item.images}
+                            renderItem={({ item, index }) => {
+                                return <Image key={item} item={item} index={index} x={x} />;
+                            }}
+                            keyExtractor={(item) => item.id}
+                            scrollEventThrottle={16}
+                            horizontal={true}
+                            bounces={false}
+                            pagingEnabled={true}
+                            showsHorizontalScrollIndicator={false}
+                            onViewableItemsChanged={onViewableItemsChanged}
+                            viewabilityConfig={{
+                                minimumViewTime: 300,
+                                viewAreaCoveragePercentThreshold: 10,
+                            }}
+                        />
+                        <View>{item?.images && <Pagination item={item.images} x={x} />}</View>
 
-                            <Text className="mt-5 mb-[10px] font-bold text-xl">{item.name}</Text>
-                            <Text className="text-xl text-money mb-[10px]">${item.price}</Text>
-                            <View className="flex flex-row mb-10">
-                                <Rating baseColor="#FF952D" disabled size={18} rating={5} />
-                                {/* <Text>Sumbit a Review</Text> */}
+                        <Text className="mt-5 mb-[10px] font-bold text-xl">{item.name}</Text>
+                        <Text className="text-xl text-money mb-[10px]">${item.price}</Text>
+                        <View className="flex flex-row mb-10">
+                            <Rating baseColor="#FF952D" disabled size={18} rating={5} />
+                            {/* <Text>Sumbit a Review</Text> */}
+                        </View>
+                        <View className="flex flex-row items-center">
+                            <View className={`w-[140px] ${form ? '' : 'border-b-[3px] border-main'}`}>
+                                <TouchableOpacity onPress={() => setForm(false)}>
+                                    <Text className={`${form ? '' : 'text-main'} font-semibold text-base text-center`}>
+                                        Infomation
+                                    </Text>
+                                </TouchableOpacity>
                             </View>
-                            <View className="flex flex-row items-center">
-                                <View className={`w-[140px] ${form ? '' : 'border-b-[3px] border-main'}`}>
-                                    <TouchableOpacity onPress={() => setForm(false)}>
-                                        <Text
-                                            className={`${form ? '' : 'text-main'} font-semibold text-base text-center`}
-                                        >
-                                            Infomation
-                                        </Text>
-                                    </TouchableOpacity>
-                                </View>
-                                <View className={`w-[140px] ${form ? 'border-b-[3px] border-main' : ''}`}>
-                                    <TouchableOpacity onPress={() => setForm(true)}>
-                                        <Text
-                                            className={`${form ? 'text-main' : ''} font-semibold text-base text-center`}
-                                        >
-                                            Review
-                                        </Text>
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
-                            <View className="p-5 w-full">
-                                <View className="w-full h-[302px] bg-white mt-[10px] mb-40 rounded-[10px]">
-                                    {form ? <Review comment={comment} /> : <ProductInfo info={item.desc} />}
-                                </View>
+                            <View className={`w-[140px] ${form ? 'border-b-[3px] border-main' : ''}`}>
+                                <TouchableOpacity onPress={() => setForm(true)}>
+                                    <Text className={`${form ? 'text-main' : ''} font-semibold text-base text-center`}>
+                                        Review
+                                    </Text>
+                                </TouchableOpacity>
                             </View>
                         </View>
-                    </TouchableWithoutFeedback>
+                        <View className="p-5 w-full">
+                            <View className="w-full h-[302px] bg-white mt-[10px] mb-40 rounded-[10px]">
+                                {form ? <Review comment={comment} /> : <ProductInfo info={item.desc} />}
+                            </View>
+                        </View>
+                    </View>
                 )}
 
                 <View className="absolute bottom-0 w-full mb-10">
@@ -213,10 +208,10 @@ const DetailScreen = () => {
                         )}
                     </View>
                 </View>
-                {active && (
-                    <Comfirm rVariant={rVariant} listVariant={listVariant} id={id} item={item} user={profile?._id} />
-                )}
             </ScrollView>
+            {active && (
+                <Comfirm rVariant={rVariant} listVariant={listVariant} id={id} item={item} user={profile?._id} />
+            )}
         </SafeAreaView>
     );
 };

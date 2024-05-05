@@ -37,6 +37,7 @@ const Comments = ({ setForm, user, product }: Props) => {
                 }
             } catch (error) {
                 Toast.show({ type: 'error', text1: 'Product has reviewed' });
+                break;
             }
         }
 

@@ -38,7 +38,7 @@ const Comfirm = ({ rVariant, listVariant, id, item, user }: Props) => {
         hex: rVariant?.hex ?? '',
         image: rVariant?.image ?? '',
         quantity: rVariant?.quantity ?? 0,
-        size: rVariant?.size ?? 0,
+        size: rVariant?.size ?? '',
     });
     console.log(colors[items.color]);
     const [quantity, setQuantity] = useState<number>(1);
@@ -55,8 +55,8 @@ const Comfirm = ({ rVariant, listVariant, id, item, user }: Props) => {
             setQuantity(quantity + 1);
         }
     };
-    const handleSetSize = (newSize: number) => {
-        setItems({ size: newSize, color: '', quantity: 0, hex: '', image: '' });
+    const handleSetSize = (newSize: string) => {
+        setItems({ size: newSize.toString(), color: '', quantity: 0, hex: '', image: '' });
     };
     const handleSetColor = (newColor: string, hex: string) => {
         setItems({ ...items, color: newColor, hex: hex });

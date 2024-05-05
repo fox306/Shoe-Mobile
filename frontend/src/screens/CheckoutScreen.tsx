@@ -100,116 +100,113 @@ const CheckoutScreen = () => {
         }
     };
     return (
-        <SafeAreaView>
-            <ScrollView showsVerticalScrollIndicator={false} className="relative h-screen">
-                <TouchableWithoutFeedback onPress={handlePressOutside}>
-                    <View className="flex h-[850px] flex-col items-center">
-                        <View className="px-10 flex flex-col items-center w-full">
-                            <View className="relative flex flex-row items-center justify-center mb-[30px] w-full">
-                                <TouchableOpacity className="absolute left-0" onPress={() => navigation.goBack()}>
-                                    <ArrowLeftIcon size={24} color={'#000000'} />
-                                </TouchableOpacity>
-                                <Text className="font-medium text-lg">Checkout</Text>
-                            </View>
-                            <View className="w-full flex flex-row items-center justify-between">
-                                <Text className="font-medium text-base">Delivery Address</Text>
-                                <Text className="text-main">Change</Text>
-                            </View>
-                            {address && (
-                                <View className="mt-[10px] mb-[20px]">
-                                    <Address data={address} />
-                                </View>
-                            )}
-                            <Text className="font-medium w-full">Order Details</Text>
-
-                            <View className="mt-[10px] w-full h-[200px]">
-                                <MasonryList
-                                    data={data}
-                                    keyExtractor={(item): string => item.id}
-                                    numColumns={1}
-                                    showsVerticalScrollIndicator={false}
-                                    renderItem={({ item }) => (
-                                        <CartItem data={item as ItemCart} {...unProps} type="Checkout" />
-                                    )}
-                                    onEndReachedThreshold={0.1}
-                                    scrollEnabled={true}
-                                />
-                            </View>
+        <SafeAreaView className="relative">
+            <ScrollView showsVerticalScrollIndicator={false} className="h-screen" onTouchEnd={handlePressOutside}>
+                <View className="flex flex-col items-center">
+                    <View className="px-10 flex flex-col items-center w-full">
+                        <View className="relative flex flex-row items-center justify-center mb-[20px] w-full">
+                            <TouchableOpacity className="absolute left-0" onPress={() => navigation.goBack()}>
+                                <ArrowLeftIcon size={24} color={'#000000'} />
+                            </TouchableOpacity>
+                            <Text className="font-medium text-lg">Checkout</Text>
                         </View>
-                        <View className="absolute bottom-0 w-full px-10 flex justify-end">
-                            <View className="flex flex-col items-center justify-center">
-                                <Text className="w-full font-medium">Payment method</Text>
-                                <View className="py-[10px] bg-white rounded-[20px] w-full flex flex-row items-center justify-around">
-                                    <View className="flex flex-row items-center ">
-                                        <RadioButton
-                                            value="COD"
-                                            status={pay === 'COD' ? 'checked' : 'unchecked'}
-                                            onPress={() => setPay('COD')}
-                                        />
-                                        <Text className="text-lg ml-[10px]">COD</Text>
-                                    </View>
-                                    <View className="flex flex-row items-center ">
-                                        <RadioButton
-                                            value="VNPAY"
-                                            status={pay === 'VNPAY' ? 'checked' : 'unchecked'}
-                                            onPress={() => setPay('VNPAY')}
-                                        />
-                                        <Text className="text-lg ml-[10px]">VNPay</Text>
-                                    </View>
-                                </View>
-                                <View className="w-full mt-2">
-                                    <View className="flex flex-row items-center justify-between">
-                                        <Text>Choose Coupon</Text>
-                                        <TouchableOpacity onPress={() => setActive(true)}>
-                                            <View className="px-2 py-2 bg-main flex items-center justify-center rounded-xl">
-                                                <Text className="text-white">Choose</Text>
-                                            </View>
-                                        </TouchableOpacity>
-                                    </View>
-                                    <Text className="font-semibold text-lg text-center">{chooseCoupon?.name}</Text>
-                                </View>
-                                <View className="mt-9 w-full flex flex-row justify-between mb-5">
-                                    <Text className="text-lg">Total</Text>
-                                    <Text className="text-xl text-money">${money}</Text>
-                                </View>
-                                <TouchableOpacity
-                                    className="w-full h-[60px] bg-main rounded-[30px] flex items-center justify-center mb-5"
-                                    onPress={handleOrder}
-                                >
-                                    <Text className="font-bold text-xl text-white tracking-widest">Order Confirm</Text>
-                                </TouchableOpacity>
-                            </View>
+                        <View className="w-full flex flex-row items-center justify-between">
+                            <Text className="font-medium text-base">Delivery Address</Text>
+                            <Text className="text-main">Change</Text>
                         </View>
-                        {active && (
-                            <View className="bg-white fixed w-full h-[350px]">
-                                {items && (
-                                    <MasonryList
-                                        data={items}
-                                        keyExtractor={(item): string => item.id}
-                                        numColumns={1}
-                                        showsVerticalScrollIndicator={false}
-                                        contentContainerStyle={{ paddingTop: 20 }}
-                                        renderItem={({ item }) => (
-                                            <View>
-                                                <Coupon
-                                                    item={item as C}
-                                                    type="Checkout"
-                                                    setChooseCoupon={setChooseCoupon as Dispatch<SetStateAction<C>>}
-                                                    setActive={setActive}
-                                                />
-                                            </View>
-                                        )}
-                                        // refreshing={isLoadingNext}
-                                        // onRefresh={() => refetch({ first: ITEM_CNT })}
-                                        onEndReachedThreshold={0.1}
-                                        // onEndReached={() => loadNext(ITEM_CNT)}
-                                    />
-                                )}
+                        {address && (
+                            <View className="mt-[10px] mb-[10px]">
+                                <Address data={address} />
                             </View>
                         )}
+                        <Text className="font-medium w-full">Order Details</Text>
+                        <View className="mt-[5px] w-full h-[240px]">
+                            <MasonryList
+                                data={data}
+                                keyExtractor={(item): string => item.id}
+                                numColumns={1}
+                                showsVerticalScrollIndicator={false}
+                                renderItem={({ item }) => (
+                                    <CartItem data={item as ItemCart} {...unProps} type="Checkout" />
+                                )}
+                                onEndReachedThreshold={0.1}
+                                scrollEnabled={true}
+                            />
+                        </View>
                     </View>
-                </TouchableWithoutFeedback>
+                </View>
             </ScrollView>
+            <View className="absolute bottom-0 w-full px-10 flex justify-end">
+                <View className="flex flex-col items-center justify-center">
+                    <Text className="w-full font-medium">Payment method</Text>
+                    <View className="py-[10px] bg-white rounded-[20px] w-full flex flex-row items-center justify-around">
+                        <View className="flex flex-row items-center ">
+                            <RadioButton
+                                value="COD"
+                                status={pay === 'COD' ? 'checked' : 'unchecked'}
+                                onPress={() => setPay('COD')}
+                            />
+                            <Text className="text-lg ml-[10px]">COD</Text>
+                        </View>
+                        <View className="flex flex-row items-center ">
+                            <RadioButton
+                                value="VNPAY"
+                                status={pay === 'VNPAY' ? 'checked' : 'unchecked'}
+                                onPress={() => setPay('VNPAY')}
+                            />
+                            <Text className="text-lg ml-[10px]">VNPay</Text>
+                        </View>
+                    </View>
+                    <View className="w-full mt-2">
+                        <View className="flex flex-row items-center justify-between">
+                            <Text>Choose Coupon</Text>
+                            <TouchableOpacity onPress={() => setActive(true)}>
+                                <View className="px-2 py-1 bg-main flex items-center justify-center rounded-xl">
+                                    <Text className="text-white">Choose</Text>
+                                </View>
+                            </TouchableOpacity>
+                        </View>
+                        <Text className="font-semibold text-lg text-center">{chooseCoupon?.name}</Text>
+                    </View>
+                    <View className="mt-2 w-full flex flex-row justify-between mb-5">
+                        <Text className="text-lg">Total</Text>
+                        <Text className="text-xl text-money">${money}</Text>
+                    </View>
+                    <TouchableOpacity
+                        className="w-full h-[60px] bg-main rounded-[30px] flex items-center justify-center mb-5"
+                        onPress={handleOrder}
+                    >
+                        <Text className="font-bold text-xl text-white tracking-widest">Order Confirm</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+            {active && (
+                <View className="bg-white fixed w-full h-[350px]">
+                    {items && (
+                        <MasonryList
+                            data={items}
+                            keyExtractor={(item): string => item.id}
+                            numColumns={1}
+                            showsVerticalScrollIndicator={false}
+                            contentContainerStyle={{ paddingTop: 20 }}
+                            renderItem={({ item }) => (
+                                <View>
+                                    <Coupon
+                                        item={item as C}
+                                        type="Checkout"
+                                        setChooseCoupon={setChooseCoupon as Dispatch<SetStateAction<C>>}
+                                        setActive={setActive}
+                                    />
+                                </View>
+                            )}
+                            // refreshing={isLoadingNext}
+                            // onRefresh={() => refetch({ first: ITEM_CNT })}
+                            onEndReachedThreshold={0.1}
+                            // onEndReached={() => loadNext(ITEM_CNT)}
+                        />
+                    )}
+                </View>
+            )}
         </SafeAreaView>
     );
 };
