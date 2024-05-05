@@ -2,21 +2,71 @@ import { View, Text, Image, TextInput, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { RadioButton } from 'react-native-paper';
-import { upUser } from '../types/type';
+import { upUser, User } from '../types/type';
 import { ArrowLeftIcon } from 'react-native-heroicons/outline';
+import { ParamListBase, useNavigation, useRoute } from '@react-navigation/native';
+import ImagePicker from 'react-native-image-crop-picker';
+import axios from '../utils/axios';
+import Toast from 'react-native-toast-message';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+
+type Params = {
+    profile: User;
+};
 
 const ChangeProfileScreen = () => {
+    const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
+    const route = useRoute();
+    const { profile } = route.params as Params;
     const [user, setUser] = useState<upUser>({
-        user: '',
-        email: '',
-        fullName: '',
-        gender: '',
-        phone: '',
-        birthDay: '',
+        user: profile._id,
+        email: profile.email,
+        fullName: profile.fullName,
+        phone: profile.phone,
+        birthDay: profile.birthDay,
     });
-    const [checked, setChecked] = useState<string>('Male');
+    const [image, setImage] = useState(profile.avatar);
+    const [checked, setChecked] = useState<string>(profile.gender);
     const handleChange = (field: string, value: string) => {
         setUser((prev) => ({ ...prev, [field]: value }));
+    };
+    // const handleImageUpload = () => {
+    //     ImagePicker.openPicker({
+    //         multiple: true,
+    //     }).then((images: any) => {
+    //         console.log(images);
+    //     });
+    // };
+    const handleUpload = async () => {
+        const formData = new FormData();
+        formData.append('file', image);
+        formData.append('user', profile._id);
+        const { data } = await axios.patch('/users/upload-avatar', {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        if (data.success) {
+            Toast.show({
+                type: 'success',
+                text1: 'Update image success',
+            });
+        }
+    };
+    const handleUpdate = async () => {
+        const { email, ...withoutEmail } = profile;
+        const item = {
+            ...withoutEmail,
+            gender: checked,
+        };
+        const { data } = await axios.patch('/users');
+        if (data.success) {
+            Toast.show({
+                type: 'success',
+                text1: 'Update info success',
+            });
+            navigation.replace('Profile');
+        }
     };
     return (
         <SafeAreaView>
@@ -27,11 +77,9 @@ const ChangeProfileScreen = () => {
                     </View>
                     <Text className="font-medium text-xl">Change Profile</Text>
                 </View>
-                <Image
-                    source={require('../../assets/avatar.jpg')}
-                    style={{ width: 140, height: 140 }}
-                    borderRadius={10}
-                />
+                <TouchableOpacity>
+                    <Image source={{ uri: image }} style={{ width: 140, height: 140 }} borderRadius={10} />
+                </TouchableOpacity>
                 <TouchableOpacity>
                     <View className="px-[60px] h-[50px] w-full bg-main rounded-[30px]">
                         <Text className="font-bold tracking-widest">Upoad Avatar</Text>

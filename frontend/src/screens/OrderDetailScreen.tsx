@@ -9,6 +9,7 @@ import { ParamListBase, useNavigation, useRoute } from '@react-navigation/native
 import axios from '../utils/axios';
 import { Address as A, Order } from '../types/type';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import Toast from 'react-native-toast-message';
 type Params = {
     id: string;
     user: string;
@@ -27,13 +28,13 @@ const OrderDetailScreen = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const { data } = await axios.get(`/orders/detail?order=${id}`);
+            const { data } = await axios.get(`/orders/${id}`);
             if (data.success) {
                 setOrder(data.data);
             }
         };
         const fetchAddress = async () => {
-            const { data } = await axios.get(`/address/user/default?user=${user}`);
+            const { data } = await axios.get(`/deliveryAddress/user/${user}/default`);
             if (data.success) {
                 setAddress(data.data);
             } else setAddress(undefined);
@@ -42,6 +43,13 @@ const OrderDetailScreen = () => {
         fetchAddress();
     }, []);
     console.log(user);
+    const handleOrder = async () => {
+        const { data } = await axios.patch(`/orders/return/${id}`);
+        if (data.success) {
+            navigation.goBack();
+            Toast.show({ type: 'success', text1: 'Return success' });
+        }
+    };
     return (
         <SafeAreaView>
             <ScrollView>
@@ -79,6 +87,7 @@ const OrderDetailScreen = () => {
                                 <View className="flex flex-row items-center ">
                                     <RadioButton
                                         value="COD"
+                                        disabled
                                         status={order?.paymentMethod === 'COD' ? 'checked' : 'unchecked'}
                                     />
                                     <Text className="text-lg ml-[10px]">COD</Text>
@@ -86,6 +95,7 @@ const OrderDetailScreen = () => {
                                 <View className="flex flex-row items-center ">
                                     <RadioButton
                                         value="VNPAY"
+                                        disabled
                                         status={order?.paymentMethod === 'VNPAY' ? 'checked' : 'unchecked'}
                                     />
                                     <Text className="text-lg ml-[10px]">VNPay</Text>
@@ -97,7 +107,7 @@ const OrderDetailScreen = () => {
                             </View>
                             <TouchableOpacity
                                 className="w-full h-[60px] bg-main rounded-[30px] flex items-center justify-center mb-5"
-                                // onPress={handleOrder}
+                                onPress={handleOrder}
                             >
                                 <Text className="font-bold text-xl text-white tracking-widest">Return</Text>
                             </TouchableOpacity>

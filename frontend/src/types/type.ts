@@ -25,7 +25,6 @@ export type upUser = {
     user: string;
     email: string;
     fullName: string;
-    gender: string;
     birthDay: string;
     phone: string;
 };
@@ -66,7 +65,7 @@ export type Product = {
 
 export type Variant = {
     listColor: detailVariant[];
-    listSize: number[];
+    listSize: string[];
 };
 
 export type detailVariant = {
@@ -208,7 +207,7 @@ export type RVariant = {
     color: string;
     hex: string;
     image: string;
-    size: number;
+    size: string;
     quantity: number;
 };
 
