@@ -136,7 +136,7 @@ const DetailScreen = () => {
 
         getProfile();
     }, []);
-    console.log(listVariant);
+    console.log(item);
     return (
         <SafeAreaView className="bg-background">
             <ScrollView showsVerticalScrollIndicator={false} className="relative">

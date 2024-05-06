@@ -63,11 +63,11 @@ const OrderDetailScreen = () => {
                         </View>
                         <View className="w-full flex flex-row items-center justify-between">
                             <Text className="font-medium text-base">Delivery Address</Text>
-                            <Text className="text-main">Change</Text>
+                            <Text className="font-medium text-main">Pay: {order?.isPaid ? 'Has pay' : 'Not Yet'}</Text>
                         </View>
                         {address && (
                             <View className="mt-[10px] mb-[20px]">
-                                <Address data={address} />
+                                <Address data={address} setAddress={() => {}} type="View" setOpen={() => {}} />
                             </View>
                         )}
                         <Text className="font-medium w-full">Order Details</Text>

@@ -17,6 +17,7 @@ type RouteParams = {
 const ProfileScreen = () => {
     const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
     const route = useRoute();
+    const [load, setLoad] = useState(false);
 
     const { profile } = route.params as RouteParams;
 
@@ -24,21 +25,32 @@ const ProfileScreen = () => {
     const modifiedHeight = height + 36;
 
     const handleLogout = async () => {
+        const token = await AsyncStorage.getItem('token');
+        console.log(token);
         try {
-            const { data } = await axios.post(`/auths/logout`);
+            const { data } = await axios.post(
+                `/auths/logout`,
+                {},
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                },
+            );
             if (data.success) {
                 Toast.show({
                     type: 'success',
                     text1: 'Logout Success',
                 });
+                setLoad((prev) => !prev);
+                AsyncStorage.removeItem('token');
+                AsyncStorage.removeItem('user');
+                navigation.replace('Login');
             }
-            AsyncStorage.clear();
-            navigation.replace('Login');
         } catch (error) {
             console.log(error);
         }
     };
-    console.log(profile);
 
     return (
         <SafeAreaView className="bg-background" style={{ height: modifiedHeight }}>
@@ -102,7 +114,7 @@ const ProfileScreen = () => {
                     </View>
                 </View>
             </ScrollView>
-            <Navbar name="Profile" />
+            <Navbar name="Profile" load={load} />
         </SafeAreaView>
     );
 };

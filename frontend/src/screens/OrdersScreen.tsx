@@ -19,14 +19,14 @@ type Params = {
 
 const OrdersScreen = () => {
     const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
-    const statuses = ['All', 'Confirming', 'Accepted', 'Delivering', 'Successful', 'Cancel', 'Return'];
+    const statuses = ['Confirming', 'Accepted', 'Delivering', 'Successful', 'Cancel', 'Return', 'All'];
     const route = useRoute();
 
     const { id } = route.params as Params;
 
-    const [active, setActive] = useState('All');
+    const [active, setActive] = useState('Confirming');
     const [orders, setOrders] = useState<O[]>([]);
-    const [product, setProduct] = useState<ItemCart[]>();
+    const [product, setProduct] = useState<ItemCart>();
     const [form, setForm] = useState(false);
 
     const handlePressOutside = () => {
@@ -52,7 +52,7 @@ const OrdersScreen = () => {
         } else {
             const fetchData = async () => {
                 const { data } = await axios.get(
-                    `/orders/find/by-user-status?pageSize=1&pageNumber=1&user=${id}&status=${active}`,
+                    `/orders/find/by-user-status?pageSize=10&pageNumber=1&user=${id}&status=${active}`,
                 );
                 if (data.success) {
                     console.log(data.data);
@@ -62,7 +62,7 @@ const OrdersScreen = () => {
             fetchData();
         }
     }, [active]);
-    console.log(orders);
+    console.log(product);
     return (
         <SafeAreaView>
             <TouchableWithoutFeedback onPress={handlePressOutside}>
@@ -111,15 +111,15 @@ const OrdersScreen = () => {
                                     <Order
                                         item={item}
                                         setForm={setForm}
-                                        setProduct={setProduct as Dispatch<SetStateAction<ItemCart[]>>}
+                                        setProduct={setProduct as Dispatch<SetStateAction<ItemCart>>}
                                     />
                                 )}
                             />
                         </View>
                     )}
 
-                    <Navbar name="Orders" />
-                    {form && <Comments setForm={setForm} user={id} product={product as ItemCart[]} />}
+                    <Navbar name="Orders" load />
+                    {form && <Comments setForm={setForm} user={id} product={product as ItemCart} />}
                 </View>
             </TouchableWithoutFeedback>
         </SafeAreaView>

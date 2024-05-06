@@ -6,19 +6,19 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 type Props = {
     item: O;
     setForm: Dispatch<SetStateAction<boolean>>;
-    setProduct: Dispatch<SetStateAction<ItemCart[]>>;
+    setProduct: Dispatch<SetStateAction<ItemCart>>;
 };
 
 const Order = ({ item, setForm, setProduct }: Props) => {
     const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
-    const handleClick = () => {
+    const handleClick = (item: ItemCart) => {
         setForm(true);
-        setProduct(item.items);
+        setProduct(item);
     };
 
     return (
         <TouchableOpacity onPress={() => navigation.navigate('OrderDetail', { id: item._id, user: item.user })}>
-            <View className="p-[10px] bg-white rounded-[5px]">
+            <View className="p-[10px] bg-white rounded-[5px] mb-[10px]">
                 {item.items &&
                     item.items.map((order, i) => (
                         <View
@@ -47,7 +47,14 @@ const Order = ({ item, setForm, setProduct }: Props) => {
                                             <View className="absolute left-[-2px] top-[-2px] p-[5px] rounded-full border-2 border-gray1"></View>
                                         </View>
                                     </View>
-                                    <Text className="text-xs">x{order.quantity}</Text>
+                                    <Text className="text-xs mr-1">x{order.quantity}</Text>
+                                    {item.status === 'Successful' && (
+                                        <TouchableOpacity onPress={() => handleClick(order)}>
+                                            <View className="w-[80px] h-8 bg-main rounded-2xl flex items-center justify-center">
+                                                <Text className="text-xs text-white">Review</Text>
+                                            </View>
+                                        </TouchableOpacity>
+                                    )}
                                 </View>
                             </View>
                         </View>
@@ -55,13 +62,6 @@ const Order = ({ item, setForm, setProduct }: Props) => {
                 <View className="mt-[10px] w-full flex flex-row items-center justify-between">
                     <Text className="text-xs text-main">{item.status}</Text>
                     <Text className="text-money">Total: ${item.total}</Text>
-                    {item.status === 'Successful' && (
-                        <TouchableOpacity onPress={handleClick}>
-                            <View className="w-[80px] h-8 bg-main rounded-2xl flex items-center justify-center">
-                                <Text className="text-xs text-white">Review</Text>
-                            </View>
-                        </TouchableOpacity>
-                    )}
                 </View>
             </View>
         </TouchableOpacity>

@@ -7,10 +7,8 @@ const ChangePasswordScreen = () => {
     return (
         <SafeAreaView>
             <View className="p-10">
-                <View className="relative h-screen mt-5 mb-[150px] flex flex-row items-center justify-center">
-                    <View>
-                        <ArrowLeftIcon className="absolute left-0" color={'#000000'} size={24} />
-                    </View>
+                <View className="relative h-screen mt-5 mb-[150px] flex flex-row items-center justify-center w-full">
+                    <ArrowLeftIcon className="absolute left-0" color={'#000000'} size={24} />
                     <Text className="font-medium text-xl">Change Password</Text>
                 </View>
                 <View className="flex flex-col gap-[30px] px-[10px] pb-[10px]">

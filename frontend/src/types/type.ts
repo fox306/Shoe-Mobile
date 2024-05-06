@@ -22,6 +22,7 @@ export type User = {
 };
 
 export type upUser = {
+    _id?: string;
     user: string;
     email: string;
     fullName: string;
@@ -83,7 +84,7 @@ export type Address = {
     districts: string;
     wards: string;
     specific: string;
-    default?: boolean;
+    isDefault?: boolean;
 };
 
 export type AddressLess = {
