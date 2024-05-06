@@ -18,7 +18,7 @@ const Order = ({ item, setForm, setProduct }: Props) => {
 
     return (
         <TouchableOpacity onPress={() => navigation.navigate('OrderDetail', { id: item._id, user: item.user })}>
-            <View className="p-[10px] bg-white rounded-[5px]">
+            <View className="p-[10px] bg-white rounded-[5px] mb-[10px]">
                 {item.items &&
                     item.items.map((order, i) => (
                         <View

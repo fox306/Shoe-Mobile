@@ -83,7 +83,7 @@ export type Address = {
     districts: string;
     wards: string;
     specific: string;
-    default?: boolean;
+    isDefault?: boolean;
 };
 
 export type AddressLess = {

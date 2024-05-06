@@ -9,14 +9,16 @@ import { ScrollView } from 'react-native';
 import axios from '../utils/axios';
 import Toast from 'react-native-toast-message';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { ParamListBase, useNavigation } from '@react-navigation/native';
+import { ParamListBase, useNavigation, useRoute } from '@react-navigation/native';
 
-type Props = {
+type Params = {
     type: string;
 };
 
-const ManageAddressScreen = ({ type }: Props) => {
+const ManageAddressScreen = () => {
     const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
+    const route = useRoute();
+    const { type } = route.params as Params;
 
     const [isSwitchOn, setIsSwitchOn] = useState(false);
     const [address, setAddress] = useState<Address>({

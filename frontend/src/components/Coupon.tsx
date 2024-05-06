@@ -12,6 +12,7 @@ const Coupon = ({ item, type, setChooseCoupon, setActive }: Props) => {
         setChooseCoupon(item);
         setActive(false);
     };
+    console.log(item);
     return (
         <>
             {type === 'Checkout' ? (
