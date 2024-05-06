@@ -52,7 +52,7 @@ const OrdersScreen = () => {
         } else {
             const fetchData = async () => {
                 const { data } = await axios.get(
-                    `/orders/find/by-user-status?pageSize=1&pageNumber=1&user=${id}&status=${active}`,
+                    `/orders/find/by-user-status?pageSize=10&pageNumber=1&user=${id}&status=${active}`,
                 );
                 if (data.success) {
                     console.log(data.data);
