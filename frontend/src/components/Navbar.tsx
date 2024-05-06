@@ -9,8 +9,9 @@ import axios from '../utils/axios';
 
 type Props = {
     name: string;
+    load: boolean;
 };
-const Navbar = ({ name }: Props) => {
+const Navbar = ({ name, load }: Props) => {
     const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
     const [profile, setProfile] = useState<User>();
@@ -32,8 +33,11 @@ const Navbar = ({ name }: Props) => {
         getToken();
         getProfile();
     }, []);
-    const check = async (name: string) => {
-        if (token) {
+    console.log('HHHHi', AsyncStorage.getItem('user'));
+
+    console.log(profile);
+    const check = (name: string) => {
+        if (token !== null) {
             navigation.navigate(name, { id: profile?._id, profile: profile });
         } else {
             navigation.navigate('Login');

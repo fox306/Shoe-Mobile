@@ -34,6 +34,8 @@ const HomeScreen = () => {
     const [total, setTotal] = useState(0);
     const [keyword, setKeyword] = useState('');
     const [load, setLoad] = useState<boolean>(false);
+    const [refresh, setRefresh] = useState<boolean>(false);
+    const [cartCount, setCartCount] = useState(0);
     // const getUser = async () => {
     //     const user = await AsyncStorage.getItem('token');
     //     console.log(user);
@@ -117,6 +119,18 @@ const HomeScreen = () => {
     const handleMoveCart = () => {
         navigation.navigate('Cart', { user: user });
     };
+    useEffect(() => {
+        if (user) {
+            const fetchCart = async () => {
+                const { data } = await axios.get(`/carts/user/${user}`);
+                if (data.success) {
+                    setCartCount(data.total);
+                }
+            };
+            fetchCart();
+        }
+    }, [refresh]);
+    console.log(user);
     return (
         <SafeAreaView className="relative" style={{ height: modifiedHeight }}>
             <ScrollView showsVerticalScrollIndicator={false} className="bg-background">
@@ -132,7 +146,7 @@ const HomeScreen = () => {
                                     <ShoppingCartIcon size={30} className="text-main" color="#33A0FF" />
                                 </View>
                                 <View className="w-4 h-4 rounded-full bg-main absolute right-[-5px] top-[-3px]">
-                                    <Text className="text-[10px] text-white text-center">3</Text>
+                                    <Text className="text-[10px] text-white text-center">{cartCount}</Text>
                                 </View>
                             </TouchableOpacity>
                         </View>
@@ -188,6 +202,7 @@ const HomeScreen = () => {
                                         user={user}
                                         setLoad={setLoad}
                                         load={load}
+                                        setRefresh={setRefresh}
                                     />
                                 )}
                             />
@@ -213,6 +228,7 @@ const HomeScreen = () => {
                                         user={user}
                                         setLoad={setLoad}
                                         load={load}
+                                        setRefresh={setRefresh}
                                     />
                                 )}
                             />
@@ -220,7 +236,7 @@ const HomeScreen = () => {
                     </View>
                 </View>
             </ScrollView>
-            <Navbar name="Home" />
+            <Navbar name="Home" load />
         </SafeAreaView>
     );
 };

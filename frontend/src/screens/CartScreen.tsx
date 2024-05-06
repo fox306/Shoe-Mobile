@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, FlatList } from 'react-native';
-import { useEffect, useRef, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CartItem from '../components/CartItem';
 import { Checkbox } from 'react-native-paper';
@@ -12,6 +12,7 @@ import Toast from 'react-native-toast-message';
 
 type RouteParams = {
     user: string;
+    setCartCount: Dispatch<SetStateAction<boolean>>;
 };
 
 const CartScreen = () => {
@@ -24,6 +25,7 @@ const CartScreen = () => {
     const [checkedAll, setCheckedAll] = useState<boolean>(false);
     const [selectedCart, setSelectedCart] = useState<ItemCart[]>([]);
     const [total, setTotal] = useState(0);
+    const [load, setLoad] = useState(false);
 
     const handleFilterData = (data: ItemCart[]) => {
         const filterData = data.filter((item) => {
@@ -66,15 +68,13 @@ const CartScreen = () => {
         setCheckedAll(data);
     };
     const handleRemove = async (id: string) => {
-        console.log('USer', user);
-        console.log('ID', id);
         const { data } = await axios.delete(`/carts/removeFromCart?user=${user}&product=${id}`);
-        console.log('ZZZZ', data);
         if (data.success) {
             Toast.show({
                 type: 'success',
                 text1: 'Delete Item Success',
             });
+            setLoad((prev) => !prev);
             const updatedCart = cart.filter((item) => item.product !== id);
             setCart(updatedCart);
         }

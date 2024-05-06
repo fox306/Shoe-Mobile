@@ -118,7 +118,7 @@ const OrdersScreen = () => {
                         </View>
                     )}
 
-                    <Navbar name="Orders" />
+                    <Navbar name="Orders" load />
                     {form && <Comments setForm={setForm} user={id} product={product as ItemCart} />}
                 </View>
             </TouchableWithoutFeedback>

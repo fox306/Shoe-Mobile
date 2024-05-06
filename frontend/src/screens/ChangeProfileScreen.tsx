@@ -82,6 +82,7 @@ const ChangeProfileScreen = () => {
             navigation.replace('Profile', { profile: items });
         }
     };
+    console.log('HHHH', AsyncStorage.getItem('user'));
     return (
         <SafeAreaView className="relative ">
             <ScrollView showsVerticalScrollIndicator={false} className="h-screen">
@@ -118,7 +119,6 @@ const ChangeProfileScreen = () => {
                             <TextInput
                                 value={user.phone}
                                 onChangeText={(e) => handleChange('phone', e)}
-                                secureTextEntry
                                 className="tracking-wider text-base"
                             ></TextInput>
                         </View>

@@ -63,6 +63,12 @@ const CodeScreen = () => {
                         text1: 'Register Success',
                     });
                     navigation.navigate('Login');
+                } else {
+                    Toast.show({
+                        type: 'error',
+                        text1: 'Account exist',
+                    });
+                    navigation.replace('Register');
                 }
             } catch (err: any) {
                 console.log(err.config);

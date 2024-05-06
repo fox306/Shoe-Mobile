@@ -14,12 +14,14 @@ type Props = {
     user: string | null;
     setLoad: Dispatch<SetStateAction<boolean>>;
     load: boolean;
+    setRefresh: Dispatch<SetStateAction<boolean>>;
 };
-const Product = ({ name, item, user, setLoad, load }: Props) => {
+const Product = ({ name, item, user, setLoad, load, setRefresh }: Props) => {
     const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
     console.log(user);
     const handleFavorite = async (e: GestureResponderEvent) => {
         e.stopPropagation();
+        console.log('JJJ', user);
         if (!user) {
             navigation.navigate('Login');
             return;
@@ -42,15 +44,26 @@ const Product = ({ name, item, user, setLoad, load }: Props) => {
 
     const handleAddtoCart = async (e: GestureResponderEvent) => {
         e.stopPropagation();
+        console.log('JJJ', user);
 
+        if (!user) {
+            navigation.navigate('Login');
+            return;
+        }
         const { data } = await axios.post('/carts/addToCart/withoutVariant', {
             user: user,
             product: item._id,
         });
         if (data.success) {
+            setRefresh((prev) => !prev);
             Toast.show({
                 type: 'success',
                 text1: 'Add to Cart Success',
+            });
+        } else {
+            Toast.show({
+                type: 'error',
+                text1: 'Product out of stuck',
             });
         }
     };

@@ -76,7 +76,7 @@ const FavoriteScreen = () => {
                     )}
                 </View>
             </ScrollView>
-            <Navbar name="Favorites" />
+            <Navbar name="Favorites" load />
         </SafeAreaView>
     );
 };

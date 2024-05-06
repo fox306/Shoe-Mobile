@@ -5,6 +5,7 @@ type Props = {
     name: string;
 };
 const Loading = ({ name }: Props) => {
+    console.log(name);
     if (name === 'Search') {
         return (
             <View className="flex-1 flex justify-center items-center">
@@ -12,23 +13,27 @@ const Loading = ({ name }: Props) => {
                 <Text className="font-medium text-3xl">Shoes not found</Text>
             </View>
         );
-    } else if (name === 'Order') {
+    }
+    if (name === 'Order') {
         return (
             <View className="flex-1 flex justify-center items-center">
                 <QueueListIcon size={100} color="#C7C7C7" />
                 <Text className="font-medium text-3xl text-[#C7C7C7]">No orders yet</Text>
             </View>
         );
-    } else if (name === 'Coupon') {
-        <View className="flex-1 flex justify-center items-center">
-            <CircleStackIcon size={100} color="#C7C7C7" />
-            <Text className="font-medium text-3xl">No coupons yet</Text>
-        </View>;
+    }
+    if (name === 'Favorite') {
+        return (
+            <View className="flex-1 flex justify-center items-center">
+                <CircleStackIcon size={100} color="#C7C7C7" />
+                <Text className="font-medium text-3xl">No favorites yet</Text>
+            </View>
+        );
     }
     return (
         <View className="flex-1 flex justify-center items-center">
-            <HeartIcon size={100} color="#C7C7C7" />
-            <Text className="font-medium text-3xl">No favorites yet</Text>
+            <CircleStackIcon size={100} color="#C7C7C7" />
+            <Text className="font-medium text-3xl">No coupons yet</Text>
         </View>
     );
 };
