@@ -61,7 +61,7 @@ const ChangeProfileScreen = () => {
     };
     const handleUpdate = async () => {
         const { email, ...withoutEmail } = profile;
-        const date = `${year}/${month < 10 ? '0' + month : month}/${day < 10 ? '0' + day : day}`;
+        const date = `${year}-${month < 10 ? '0' + month : month}-${day < 10 ? '0' + day : day}`;
         const item = {
             ...withoutEmail,
             birthDay: date,
