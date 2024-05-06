@@ -65,9 +65,11 @@ const CartScreen = () => {
         const data = cart?.every((item) => item.selected === true);
         setCheckedAll(data);
     };
-
     const handleRemove = async (id: string) => {
-        const { data } = await axios.delete(`/carts/remove?user=${user}&product=${id}`);
+        console.log('USer', user);
+        console.log('ID', id);
+        const { data } = await axios.delete(`/carts/removeFromCart?user=${user}&product=${id}`);
+        console.log('ZZZZ', data);
         if (data.success) {
             Toast.show({
                 type: 'success',

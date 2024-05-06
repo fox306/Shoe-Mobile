@@ -39,7 +39,7 @@ const Navbar = ({ name }: Props) => {
             navigation.navigate('Login');
         }
     };
-
+    // console.log(profile);
     return (
         <View className="bg-white absolute bottom-0 right-0 left-0 h-20 flex flex-row items-center justify-between px-[50px] rounded-t-[30px] z-50">
             <TouchableOpacity onPress={() => navigation.navigate('Home')}>

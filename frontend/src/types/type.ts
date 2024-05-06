@@ -22,6 +22,7 @@ export type User = {
 };
 
 export type upUser = {
+    _id?: string;
     user: string;
     email: string;
     fullName: string;

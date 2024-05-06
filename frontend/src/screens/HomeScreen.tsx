@@ -97,7 +97,7 @@ const HomeScreen = () => {
     useEffect(() => {
         try {
             const fetchItems = async () => {
-                const { data } = await axios.get('/products/search/hotDeal');
+                const { data } = await axios.get('/revenue/products/hot');
                 if (data.success) {
                     setHots(data.data);
                     setTotal(data.total);

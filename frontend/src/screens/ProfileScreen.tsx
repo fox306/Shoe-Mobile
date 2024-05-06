@@ -24,8 +24,17 @@ const ProfileScreen = () => {
     const modifiedHeight = height + 36;
 
     const handleLogout = async () => {
+        const token = await AsyncStorage.getItem('token');
         try {
-            const { data } = await axios.post(`/auths/logout`);
+            const { data } = await axios.post(
+                `/auths/logout`,
+                {},
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                },
+            );
             if (data.success) {
                 Toast.show({
                     type: 'success',
@@ -38,7 +47,7 @@ const ProfileScreen = () => {
             console.log(error);
         }
     };
-    console.log(profile);
+    console.log('HIII', profile);
 
     return (
         <SafeAreaView className="bg-background" style={{ height: modifiedHeight }}>

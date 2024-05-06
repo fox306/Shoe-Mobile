@@ -9,6 +9,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 import axios from '../utils/axios';
 import Toast from 'react-native-toast-message';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type Params = {
     profile: User;
@@ -22,14 +23,14 @@ const ChangeProfileScreen = () => {
         user: profile._id,
         email: profile.email,
         fullName: profile.fullName,
-        phone: profile.phone,
+        phone: profile.phone ?? '',
         birthDay: profile.birthDay,
     });
     const date = new Date(user.birthDay);
     const day = date.getDate();
     const month = date.getMonth() + 1;
     const year = date.getFullYear();
-    const convertDate = `${day}/${month < 10 ? '0' + month : month}/${year}`;
+    const convertDate = `${year}-${month < 10 ? '0' + month : month}-${day < 10 ? '0' + day : day}`;
     const [image, setImage] = useState(profile.avatar);
     const [checked, setChecked] = useState<string>(profile.gender);
     const handleChange = (field: string, value: string) => {
@@ -59,21 +60,26 @@ const ChangeProfileScreen = () => {
             });
         }
     };
+    // console.log('HOÔO', user);
+    // console.log('HOÔO1', profile);
     const handleUpdate = async () => {
-        const { email, ...withoutEmail } = profile;
+        const { _id, email, ...withoutEmail } = user;
         const date = `${year}-${month < 10 ? '0' + month : month}-${day < 10 ? '0' + day : day}`;
         const item = {
             ...withoutEmail,
             birthDay: date,
             gender: checked,
         };
+        const items = { ...user, gender: checked, avatar: image, _id: user.user };
+        console.log('HEEE', items);
         const { data } = await axios.patch('/users', item);
         if (data.success) {
+            await AsyncStorage.setItem('user', JSON.stringify(items));
             Toast.show({
                 type: 'success',
                 text1: 'Update info success',
             });
-            navigation.replace('Profile');
+            navigation.replace('Profile', { profile: items });
         }
     };
     return (
@@ -89,7 +95,7 @@ const ChangeProfileScreen = () => {
                     <TouchableOpacity>
                         <Image source={{ uri: image }} style={{ width: 140, height: 140 }} borderRadius={10} />
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={handleUpdate}>
+                    <TouchableOpacity onPress={handleUpload}>
                         <View className="px-[60px] h-[50px] w-full bg-main rounded-[30px] flex justify-center">
                             <Text className="font-bold tracking-widest text-white">Upoad Avatar</Text>
                         </View>
